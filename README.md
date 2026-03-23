@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# AV-CV
 
-TODO: Document your project here
+Portfolio personal desarrollado con React, TypeScript, Vite y Tailwind CSS.

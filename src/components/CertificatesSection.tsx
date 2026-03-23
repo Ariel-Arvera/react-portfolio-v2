@@ -1,28 +1,30 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Award, ExternalLink } from "lucide-react";
-
-const certificates = [
-  {
-    title: "User Experience Design Fundamentals",
-    issuer: "IBM SkillsBuild",
-    level: "Intermediate",
-    duration: "6 weeks",
-    date: "May 11, 2025",
-    link: "https://www.credly.com/badges/cc780be5-82b0-4d83-91fe-45b6d9637d0c",
-  },
-  {
-    title: "Web Development Fundamentals",
-    issuer: "IBM SkillsBuild",
-    level: "Beginner",
-    duration: "8 weeks",
-    date: "September 22, 2024",
-    link: "https://www.credly.com/badges/23eb0a59-f61e-447c-8d34-1aedd7a8df2f",
-  },
-];
+import { getCvData } from "@/data/cv-2";
+import { useLanguage } from "@/context/language";
 
 const CertificatesSection = () => {
+  const { language } = useLanguage();
+  const { education } = getCvData(language);
   const { ref, isVisible } = useScrollAnimation();
+  const certificates = education
+    .filter((item) => !item.degree)
+    .map((item) => ({
+      title: item.institution,
+      issuer: item.details,
+      level:
+        item.tags?.includes("backend") || item.tags?.includes("ux/ui")
+          ? language === "es"
+            ? "Intermedio"
+            : "Intermediate"
+          : language === "es"
+            ? "Basico"
+            : "Beginner",
+      duration: language === "es" ? "Curso completado" : "Course completed",
+      date: item.period,
+      link: "#",
+    }));
 
   return (
     <section id="certificates" className="section-padding">
@@ -32,17 +34,18 @@ const CertificatesSection = () => {
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           className="text-3xl md:text-4xl font-bold text-center mb-16 gradient-text"
         >
-          My Certificates
+          {language === "es" ? "Certificaciones" : "Certificates"}
         </motion.h2>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 max-w-7xl mx-auto">
           {certificates.map((cert, i) => (
             <motion.div
               key={cert.title}
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.15 }}
-              className="glass-card p-6 hover:box-glow transition-all duration-500 group"
+              whileHover={{ y: -8, scale: 1.01 }}
+              className="glass-card p-5 hover:box-glow transition-all duration-500 group"
             >
               <div className="flex items-center gap-2 mb-4">
                 <Award className="w-6 h-6 text-primary" />
@@ -50,20 +53,22 @@ const CertificatesSection = () => {
                   {cert.level}
                 </span>
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-1">{cert.title}</h3>
+              <h3 className="text-base font-bold text-foreground mb-1 line-clamp-2">{cert.title}</h3>
               <p className="text-sm text-muted-foreground mb-3">{cert.issuer}</p>
               <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
                 <span>{cert.duration}</span>
                 <span>{cert.date}</span>
               </div>
-              <a
-                href={cert.link}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-              >
-                View <ExternalLink className="w-3 h-3" />
-              </a>
+              {cert.link !== "#" ? (
+                <a
+                  href={cert.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                >
+                  {language === "es" ? "Ver" : "View"} <ExternalLink className="w-3 h-3" />
+                </a>
+              ) : null}
             </motion.div>
           ))}
         </div>

@@ -1,37 +1,34 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { GraduationCap, Award, Clock, Lightbulb, BookOpen, TrendingUp } from "lucide-react";
-
-const educationData = [
-  {
-    year: "2023 - Present",
-    degree: "Bachelor of Engineering",
-    institution: "SAL Engineering and Technical Institute",
-    field: "Computer Engineering",
-    cgpa: "8.33",
-    fill: 85,
-    tags: ["Data Structures", "Algorithms", "Database Management", "Web Technologies"],
-  },
-  {
-    year: "2020 - 2023",
-    degree: "Diploma in Computer Engineering",
-    institution: "Government Polytechnic Ahmedabad",
-    field: "Computer Engineering",
-    cgpa: "7.67",
-    fill: 78,
-    tags: ["Programming Fundamentals", "Database Concepts", "Basic Web Development"],
-  },
-];
-
-const stats = [
-  { icon: GraduationCap, value: "2", label: "Degrees" },
-  { icon: Clock, value: "6+", label: "Years" },
-  { icon: Award, value: "8.0+", label: "Avg CGPA" },
-  { icon: Lightbulb, value: "10+", label: "Key Skills" },
-];
+import { getCvData } from "@/data/cv-2";
+import { useLanguage } from "@/context/language";
 
 const EducationSection = () => {
+  const { language } = useLanguage();
+  const { education } = getCvData(language);
   const { ref, isVisible } = useScrollAnimation();
+  const educationData = education
+    .filter((item) => item.degree)
+    .map((item) => ({
+      year: item.period,
+      degree: item.degree ?? "",
+      institution: item.institution,
+      field: language === "es" ? "Software / Desarrollo" : "Software / Development",
+      cgpa: item.details,
+      fill: 82,
+      tags:
+        language === "es"
+          ? ["Desarrollo Web", "Ingeniería de Software", "Aprendizaje continuo"]
+          : ["Web Development", "Software Engineering", "Continuous learning"],
+    }));
+
+  const stats = [
+    { icon: GraduationCap, value: "1", label: language === "es" ? "Carrera" : "Degree" },
+    { icon: Clock, value: "10+", label: language === "es" ? "Años exp." : "Pro years" },
+    { icon: Award, value: "7+", label: language === "es" ? "Certificados" : "Certificates" },
+    { icon: Lightbulb, value: "40+", label: language === "es" ? "Habilidades" : "Skills" },
+  ];
 
   return (
     <section id="education" className="section-padding bg-secondary/20">
@@ -41,7 +38,7 @@ const EducationSection = () => {
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           className="text-3xl md:text-4xl font-bold text-center mb-16 gradient-text"
         >
-          My Education
+          {language === "es" ? "Formación" : "Education"}
         </motion.h2>
 
         <div className="grid md:grid-cols-2 gap-8 mb-16">
@@ -51,6 +48,7 @@ const EducationSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.15 }}
+              whileHover={{ y: -8 }}
               className="glass-card p-6 hover:box-glow transition-all duration-500 group"
             >
               <div className="flex items-center justify-between mb-4">
@@ -61,7 +59,7 @@ const EducationSection = () => {
               <h4 className="text-sm text-muted-foreground mb-4">{edu.institution}</h4>
               <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                 <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" /> {edu.field}</span>
-                <span className="flex items-center gap-1"><TrendingUp className="w-3 h-3" /> {edu.cgpa} CGPA</span>
+                  <span className="flex items-center gap-1"><TrendingUp className="w-3 h-3" /> {edu.cgpa}</span>
               </div>
               <div className="flex flex-wrap gap-2 mb-4">
                 {edu.tags.map((tag) => (
@@ -76,7 +74,7 @@ const EducationSection = () => {
                   className="h-full bg-gradient-to-r from-primary to-glow-secondary rounded-full"
                 />
               </div>
-              <p className="text-right text-xs text-muted-foreground mt-1">{edu.cgpa} CGPA</p>
+              <p className="text-right text-xs text-muted-foreground mt-1">{edu.cgpa}</p>
             </motion.div>
           ))}
         </div>

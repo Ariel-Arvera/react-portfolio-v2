@@ -1,38 +1,53 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Mail, MapPin, Clock, BookOpen, Music, Film, Gamepad2, Github, Linkedin, Twitter } from "lucide-react";
-
-const contactCards = [
-  {
-    icon: Mail,
-    title: "Email",
-    desc: "For project inquiries and collaboration opportunities",
-    detail: "krupalfataniya007@gmail.com",
-    link: "mailto:krupalfataniya007@gmail.com",
-  },
-  {
-    icon: MapPin,
-    title: "Location",
-    desc: "Based in Ahmedabad, India",
-    detail: "Ahmedabad, Gujarat, India",
-  },
-  {
-    icon: Clock,
-    title: "Availability",
-    desc: "Open to freelance and full-time opportunities",
-    detail: "Available for new projects",
-  },
-];
-
-const hobbies = [
-  { icon: BookOpen, label: "Reading" },
-  { icon: Music, label: "Music" },
-  { icon: Film, label: "Movies" },
-  { icon: Gamepad2, label: "Gaming" },
-];
+import { Mail, MapPin, Clock, BookOpen, Music, Film, Gamepad2, Linkedin, Phone } from "lucide-react";
+import { getCvData } from "@/data/cv-2";
+import { useLanguage } from "@/context/language";
 
 const ContactSection = () => {
+  const { language } = useLanguage();
+  const { personalInfo } = getCvData(language);
   const { ref, isVisible } = useScrollAnimation();
+
+  const contactCards = [
+    {
+      icon: Mail,
+      title: "Email",
+      desc:
+        language === "es"
+          ? "Para consultas de proyectos y colaboraciones"
+          : "For project inquiries and collaborations",
+      detail: personalInfo.email,
+      link: `mailto:${personalInfo.email}`,
+    },
+    {
+      icon: MapPin,
+      title: language === "es" ? "Ubicación" : "Location",
+      desc: language === "es" ? "Actualmente en" : "Currently in",
+      detail: personalInfo.location,
+    },
+    {
+      icon: Clock,
+      title: language === "es" ? "Disponibilidad" : "Availability",
+      desc: language === "es" ? "Estado laboral" : "Current status",
+      detail: personalInfo.availability,
+    },
+  ];
+
+  const hobbies =
+    language === "es"
+      ? [
+          { icon: BookOpen, label: "Lectura" },
+          { icon: Music, label: "Música" },
+          { icon: Film, label: "Películas" },
+          { icon: Gamepad2, label: "Gaming" },
+        ]
+      : [
+          { icon: BookOpen, label: "Reading" },
+          { icon: Music, label: "Music" },
+          { icon: Film, label: "Movies" },
+          { icon: Gamepad2, label: "Gaming" },
+        ];
 
   return (
     <section id="contact" className="section-padding bg-secondary/20">
@@ -42,7 +57,7 @@ const ContactSection = () => {
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           className="text-3xl md:text-4xl font-bold text-center mb-16 gradient-text"
         >
-          Get In Touch
+          {language === "es" ? "Contacto" : "Get In Touch"}
         </motion.h2>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -52,6 +67,7 @@ const ContactSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.1 }}
+              whileHover={{ y: -8, scale: 1.02 }}
               className="glass-card p-6 text-center hover:box-glow transition-all duration-500 group"
             >
               <card.icon className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
@@ -74,18 +90,18 @@ const ContactSection = () => {
             transition={{ delay: 0.5 }}
             className="glass-card p-6 text-center"
           >
-            <h3 className="text-lg font-bold text-foreground mb-4">Social Media</h3>
+            <h3 className="text-lg font-bold text-foreground mb-4">{language === "es" ? "Redes" : "Social"}</h3>
             <div className="flex justify-center gap-4">
               {[
-                { icon: Github, url: "https://github.com/krupal-036" },
-                { icon: Linkedin, url: "https://linkedin.com/in/krupal-fataniya" },
-                { icon: Twitter, url: "#" },
+                { icon: Mail, url: `mailto:${personalInfo.email}` },
+                { icon: Linkedin, url: personalInfo.linkedin },
+                { icon: Phone, url: `tel:${personalInfo.phone.replace(/\s+/g, "")}` },
               ].map(({ icon: Icon, url }, i) => (
                 <a
                   key={i}
                   href={url}
-                  target="_blank"
-                  rel="noreferrer"
+                  target={url.startsWith("http") ? "_blank" : undefined}
+                  rel={url.startsWith("http") ? "noreferrer" : undefined}
                   className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all hover:scale-110"
                 >
                   <Icon className="w-5 h-5" />
@@ -100,7 +116,7 @@ const ContactSection = () => {
             transition={{ delay: 0.6 }}
             className="glass-card p-6 text-center"
           >
-            <h3 className="text-lg font-bold text-foreground mb-4">Beyond Coding</h3>
+            <h3 className="text-lg font-bold text-foreground mb-4">{language === "es" ? "Más allá del código" : "Beyond Coding"}</h3>
             <div className="flex justify-center gap-4">
               {hobbies.map(({ icon: Icon, label }) => (
                 <div key={label} className="flex flex-col items-center gap-1">
