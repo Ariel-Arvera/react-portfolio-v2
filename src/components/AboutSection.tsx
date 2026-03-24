@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import type { CSSProperties } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Code, Brain, Smartphone, Cloud, Database, Plug, FolderKanban, Users, Rocket } from "lucide-react";
 import { getCvData } from "@/data/cv-2";
@@ -42,9 +43,9 @@ const orbitTechIcons: { name: string; url: string; ring: OrbitRing }[] = [
   { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", ring: "inner" },
 ];
 
-const orbitConfig: Record<OrbitRing, { radius: number; duration: number; direction: "normal" | "reverse" }> = {
-  outer: { radius: 120, duration: 26, direction: "normal" },
-  inner: { radius: 90, duration: 18, direction: "reverse" },
+const orbitConfig: Record<OrbitRing, { radius: number; duration: number; direction: "normal" | "reverse"; depth: number; tilt: number }> = {
+  outer: { radius: 120, duration: 26, direction: "normal", depth: 42, tilt: 22 },
+  inner: { radius: 90, duration: 18, direction: "reverse", depth: 28, tilt: 16 },
 };
 
 const AboutSection = () => {
@@ -71,12 +72,13 @@ const AboutSection = () => {
               className="relative w-64 h-64 max-w-full flex items-center justify-center"
               whileHover={{ scale: 1.04, rotate: -1.5 }}
               transition={{ type: "spring", stiffness: 220, damping: 16 }}
+              style={{ perspective: "1200px" }}
             >
               <div className="absolute inset-0 pointer-events-none" aria-hidden>
                 {(Object.keys(orbitConfig) as OrbitRing[]).map((ring) => {
                   const icons = orbitTechIcons.filter((icon) => icon.ring === ring);
                   if (!icons.length) return null;
-                  const { radius, duration, direction } = orbitConfig[ring];
+                  const { radius, duration, direction, depth, tilt } = orbitConfig[ring];
                   return (
                     <div
                       key={ring}
@@ -86,18 +88,19 @@ const AboutSection = () => {
                         height: radius * 2,
                         animationDuration: `${duration}s`,
                         animationDirection: direction,
-                      }}
+                        "--orbit-tilt": `${tilt}deg`,
+                      } as CSSProperties}
                     >
                       {icons.map((icon, index) => {
                         const angle = (360 / icons.length) * index;
+                        const chipStyle: CSSProperties = {
+                          transform: `rotate(${angle}deg) translateX(${radius}px) rotate(${-angle}deg) translateZ(${depth}px)`,
+                        };
                         return (
                           <span
                             key={`${ring}-${icon.name}-${index}`}
                             className="orbit-chip"
-                            style={{
-                              transform: `rotate(${angle}deg) translate(${radius}px) rotate(-${angle}deg)`,
-                              animationDelay: `${index * 0.25}s`,
-                            }}
+                            style={{ ...chipStyle, animationDelay: `${index * 0.25}s` }}
                             title={icon.name}
                           >
                             <img src={icon.url} alt={icon.name} />
