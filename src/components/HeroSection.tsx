@@ -132,14 +132,6 @@ const HeroSection = () => {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="text-muted-foreground text-base md:text-lg mb-2 max-w-2xl"
-            >
-              {personalInfo.title}
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
               className="text-muted-foreground text-sm mb-4"
             >
