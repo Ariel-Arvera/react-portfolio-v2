@@ -30,23 +30,17 @@ const highlightsByLanguage = {
   ],
 } as const;
 
-type OrbitRing = "outer" | "inner";
-
-const orbitTechIcons: { name: string; url: string; ring: OrbitRing }[] = [
-  { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg", ring: "outer" },
-  { name: "TypeScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg", ring: "outer" },
-  { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg", ring: "outer" },
-  { name: "Docker", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg", ring: "outer" },
-  { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg", ring: "inner" },
-  { name: "Tailwind CSS", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg", ring: "inner" },
-  { name: "Git", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg", ring: "inner" },
-  { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", ring: "inner" },
+const floatingTechIcons = [
+  { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg", top: -12, left: 16, dx: 18, dy: -16, delay: 0 },
+  { name: "TypeScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg", top: 6, left: -4, dx: -14, dy: -10, delay: 0.2 },
+  { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg", top: 32, left: -10, dx: -12, dy: 8, delay: 0.4 },
+  { name: "Docker", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg", top: 72, left: -2, dx: -8, dy: 14, delay: 0.6 },
+  { name: "Tailwind CSS", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg", top: 102, left: 22, dx: 12, dy: 12, delay: 0.8 },
+  { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg", top: 110, left: 54, dx: 16, dy: -10, delay: 1 },
+  { name: "Git", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg", top: 84, left: 86, dx: -10, dy: -16, delay: 1.2 },
+  { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", top: 40, left: 96, dx: -18, dy: -6, delay: 1.4 },
+  { name: "Java", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg", top: 4, left: 78, dx: 10, dy: 12, delay: 1.6 },
 ];
-
-const orbitConfig: Record<OrbitRing, { radius: number; duration: number; direction: "normal" | "reverse"; depth: number; tilt: number; flatten: number }> = {
-  outer: { radius: 120, duration: 28, direction: "normal", depth: 46, tilt: 62, flatten: 0.38 },
-  inner: { radius: 90, duration: 20, direction: "reverse", depth: 32, tilt: 48, flatten: 0.5 },
-};
 
 const AboutSection = () => {
   const { language } = useLanguage();
@@ -69,49 +63,29 @@ const AboutSection = () => {
         >
           <div className="md:w-1/3 flex justify-center">
             <motion.div
-              className="relative w-64 h-64 max-w-full flex items-center justify-center orbit-stage"
+              className="relative w-64 h-64 max-w-full flex items-center justify-center tech-float-stage"
               whileHover={{ scale: 1.04, rotate: -1.5 }}
               transition={{ type: "spring", stiffness: 220, damping: 16 }}
               style={{ perspective: "1400px" }}
             >
-              <div className="absolute inset-0 pointer-events-none" aria-hidden>
-                {(Object.keys(orbitConfig) as OrbitRing[]).map((ring) => {
-                  const icons = orbitTechIcons.filter((icon) => icon.ring === ring);
-                  if (!icons.length) return null;
-                  const { radius, duration, direction, depth, tilt, flatten } = orbitConfig[ring];
-                  return (
-                    <div
-                      key={ring}
-                      className={`orbit-layer ${ring === "outer" ? "orbit-layer-outer" : "orbit-layer-inner"}`}
-                      style={{
-                        width: radius * 2,
-                        height: radius * 2,
-                        animationDuration: `${duration}s`,
-                        animationDirection: direction,
-                        "--orbit-tilt": `${tilt}deg`,
-                        "--orbit-flatten": flatten,
-                        "--orbit-depth": `${depth}px`,
-                      } as CSSProperties}
-                    >
-                      {icons.map((icon, index) => {
-                        const angle = (360 / icons.length) * index;
-                        const chipStyle: CSSProperties = {
-                          transform: `rotate(${angle}deg) translateX(${radius}px) rotate(${-angle}deg) translateZ(${depth}px)`,
-                        };
-                        return (
-                          <span
-                            key={`${ring}-${icon.name}-${index}`}
-                            className="orbit-chip"
-                            style={{ ...chipStyle, animationDelay: `${index * 0.25}s` }}
-                            title={icon.name}
-                          >
-                            <img src={icon.url} alt={icon.name} />
-                          </span>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+              <div className="absolute inset-0 tech-float-layer" aria-hidden>
+                {floatingTechIcons.map((icon) => (
+                  <span
+                    key={`${icon.name}-${icon.left}-${icon.top}`}
+                    className="tech-float-chip"
+                    style={{
+                      top: `${icon.top}%`,
+                      left: `${icon.left}%`,
+                      animationDelay: `${icon.delay}s`,
+                      animationDuration: `${6 + icon.delay * 0.8}s`,
+                      ["--dx" as string]: `${icon.dx}px`,
+                      ["--dy" as string]: `${icon.dy}px`,
+                    } as CSSProperties}
+                    title={icon.name}
+                  >
+                    <img src={icon.url} alt={icon.name} />
+                  </span>
+                ))}
               </div>
               <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden border-2 border-primary/30 box-glow relative z-10 bg-card/80">
                 <img
