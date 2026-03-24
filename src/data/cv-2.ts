@@ -120,13 +120,11 @@ const esData: CvData = {
     { id: "about", title: "Sobre Mí", desc: "Perfil profesional y enfoque técnico" },
     { id: "education", title: "Formación", desc: "Formación académica y certificaciones" },
     { id: "skills", title: "Habilidades", desc: "Stack técnico y herramientas" },
-    { id: "projects", title: "Trabajos", desc: "Experiencia y proyectos destacados" },
     { id: "contact", title: "Contacto", desc: "Canales de contacto profesional" },
   ],
   navLinks: [
     { id: "hero", label: "Inicio" },
     { id: "about", label: "Sobre Mí" },
-    { id: "projects", label: "Trabajos" },
     { id: "contact", label: "Contacto" },
   ],
   experience: [
@@ -302,13 +300,11 @@ const enData: CvData = {
     { id: "about", title: "About", desc: "Professional profile and technical focus" },
     { id: "education", title: "Education", desc: "Academic background and certifications" },
     { id: "skills", title: "Skills", desc: "Technical stack and tools" },
-    { id: "projects", title: "Work", desc: "Experience and selected projects" },
     { id: "contact", title: "Contact", desc: "Professional contact channels" },
   ],
   navLinks: [
     { id: "hero", label: "Home" },
     { id: "about", label: "About" },
-    { id: "projects", label: "Work" },
     { id: "contact", label: "Contact" },
   ],
   experience: [

@@ -11,7 +11,6 @@ const labels: Record<"es" | "en", { brand: string; nav: Item[] }> = {
     nav: [
       { id: "hero", label: "Inicio" },
       { id: "about", label: "Sobre Mí" },
-      { id: "projects", label: "Trabajos" },
       { id: "contact", label: "Contacto" },
     ],
   },
@@ -20,7 +19,6 @@ const labels: Record<"es" | "en", { brand: string; nav: Item[] }> = {
     nav: [
       { id: "hero", label: "Home" },
       { id: "about", label: "About" },
-      { id: "projects", label: "Work" },
       { id: "contact", label: "Contact" },
     ],
   },

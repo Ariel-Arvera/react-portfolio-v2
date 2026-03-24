@@ -10,7 +10,7 @@ const HeroSection = () => {
   const typedName = useTypingEffect(
     [
       language === "es" ? `Hola! Soy ${personalInfo.name}...` : `Hi! I'm ${personalInfo.name}...`,
-      language === "es" ? "Apasionado por UI/UX..." : "I build functional web experiences...",
+      language === "es" ? "Apasionado por UI/UX..." : "Passionate about UI/UX...",
       "React + TypeScript + APIs...",
     ],
     80, 50, 2000
@@ -71,11 +71,14 @@ const HeroSection = () => {
           transition={{ delay: 1 }}
         >
           <a
-            href="#projects"
-            onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }}
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+            }}
             className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all duration-300 hover:scale-105 animate-soft-pulse"
           >
-            {language === "es" ? "Ver trabajos" : "View Work"} <ExternalLink className="w-4 h-4" />
+            {language === "es" ? "Hablemos" : "Let's connect"} <ExternalLink className="w-4 h-4" />
           </a>
         </motion.div>
       </motion.div>

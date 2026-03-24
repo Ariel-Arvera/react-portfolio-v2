@@ -4,11 +4,10 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 const sectionColors: Record<string, string> = {
   hero: "#f8ff3d",
   about: "#00ffff",
-  projects: "#ff47d1",
   contact: "#70ff4d",
 };
 
-const trackSections = ["hero", "about", "projects", "contact"];
+const trackSections = ["hero", "about", "contact"];
 
 const NeonCursor = () => {
   const [enabled, setEnabled] = useState(false);
