@@ -198,11 +198,15 @@
 
 @keyframes orbit-spin-3d {
   from {
-    transform: translate(-50%, -50%) rotateX(var(--orbit-tilt, 18deg)) rotateZ(0deg);
+    transform: translate(-50%, -50%) rotateX(var(--orbit-tilt, 18deg)) scaleY(var(--orbit-flatten, 1)) rotateZ(0deg);
   }
   to {
-    transform: translate(-50%, -50%) rotateX(var(--orbit-tilt, 18deg)) rotateZ(360deg);
+    transform: translate(-50%, -50%) rotateX(var(--orbit-tilt, 18deg)) scaleY(var(--orbit-flatten, 1)) rotateZ(360deg);
   }
+}
+
+.orbit-stage {
+  transform-style: preserve-3d;
 }
 
 .orbit-layer {
@@ -216,6 +220,17 @@
   pointer-events: none;
   will-change: transform;
   transform-style: preserve-3d;
+}
+
+.orbit-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--primary) / 0.35);
+  box-shadow: 0 0 40px hsl(var(--primary) / 0.2);
+  opacity: 0.35;
+  filter: blur(0.5px);
 }
 
 .orbit-chip {

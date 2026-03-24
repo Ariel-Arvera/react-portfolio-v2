@@ -43,9 +43,9 @@ const orbitTechIcons: { name: string; url: string; ring: OrbitRing }[] = [
   { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", ring: "inner" },
 ];
 
-const orbitConfig: Record<OrbitRing, { radius: number; duration: number; direction: "normal" | "reverse"; depth: number; tilt: number }> = {
-  outer: { radius: 120, duration: 26, direction: "normal", depth: 42, tilt: 22 },
-  inner: { radius: 90, duration: 18, direction: "reverse", depth: 28, tilt: 16 },
+const orbitConfig: Record<OrbitRing, { radius: number; duration: number; direction: "normal" | "reverse"; depth: number; tilt: number; flatten: number }> = {
+  outer: { radius: 120, duration: 28, direction: "normal", depth: 46, tilt: 62, flatten: 0.38 },
+  inner: { radius: 90, duration: 20, direction: "reverse", depth: 32, tilt: 48, flatten: 0.5 },
 };
 
 const AboutSection = () => {
@@ -69,16 +69,16 @@ const AboutSection = () => {
         >
           <div className="md:w-1/3 flex justify-center">
             <motion.div
-              className="relative w-64 h-64 max-w-full flex items-center justify-center"
+              className="relative w-64 h-64 max-w-full flex items-center justify-center orbit-stage"
               whileHover={{ scale: 1.04, rotate: -1.5 }}
               transition={{ type: "spring", stiffness: 220, damping: 16 }}
-              style={{ perspective: "1200px" }}
+              style={{ perspective: "1400px" }}
             >
               <div className="absolute inset-0 pointer-events-none" aria-hidden>
                 {(Object.keys(orbitConfig) as OrbitRing[]).map((ring) => {
                   const icons = orbitTechIcons.filter((icon) => icon.ring === ring);
                   if (!icons.length) return null;
-                  const { radius, duration, direction, depth, tilt } = orbitConfig[ring];
+                  const { radius, duration, direction, depth, tilt, flatten } = orbitConfig[ring];
                   return (
                     <div
                       key={ring}
@@ -89,6 +89,8 @@ const AboutSection = () => {
                         animationDuration: `${duration}s`,
                         animationDirection: direction,
                         "--orbit-tilt": `${tilt}deg`,
+                        "--orbit-flatten": flatten,
+                        "--orbit-depth": `${depth}px`,
                       } as CSSProperties}
                     >
                       {icons.map((icon, index) => {
