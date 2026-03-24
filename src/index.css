@@ -53,6 +53,8 @@
 @layer base {
   html {
     scroll-behavior: auto;
+    zoom: 0.8;
+    transform-origin: top center;
 
   }
 
