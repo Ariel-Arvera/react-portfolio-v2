@@ -52,7 +52,15 @@ const HeroSection = () => {
             className="flex-1 text-left"
           >
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="gradient-text">{typedName}</span>
+              <span
+                className="gradient-text"
+                style={{
+                  fontFamily: '"JetBrains Mono", monospace',
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {typedName}
+              </span>
               <span className="typing-cursor text-primary">▌</span>
             </h1>
             <motion.p
