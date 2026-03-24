@@ -98,7 +98,7 @@ const AboutSection = () => {
           </div>
           <div className="md:w-2/3">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-text">{language === "es" ? "Sobre Mí" : "About Me"}</h2>
-            <p className="text-muted-foreground mb-4 leading-relaxed">
+            <p className="text-muted-foreground mb-4 leading-relaxed text-justify" style={{ fontFamily: "Arial, sans-serif" }}>
               {aboutText}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
