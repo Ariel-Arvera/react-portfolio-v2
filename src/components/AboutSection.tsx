@@ -9,7 +9,7 @@ const highlightsByLanguage = {
     { icon: Code, label: "Desarrollo Full Stack" },
     { icon: Brain, label: "Aprendizaje continuo" },
     { icon: Smartphone, label: "Diseño responsive" },
-    { icon: Cloud, label: "Integración cloud" },
+    // { icon: Cloud, label: "Integración cloud" },
     { icon: Database, label: "Gestión de bases de datos" },
     { icon: Plug, label: "Integración de APIs" },
     { icon: FolderKanban, label: "Arquitectura de proyectos" },
@@ -20,7 +20,7 @@ const highlightsByLanguage = {
     { icon: Code, label: "Full Stack Development" },
     { icon: Brain, label: "Continuous learning" },
     { icon: Smartphone, label: "Responsive design" },
-    { icon: Cloud, label: "Cloud integration" },
+    // { icon: Cloud, label: "Cloud integration" },
     { icon: Database, label: "Database management" },
     { icon: Plug, label: "API integration" },
     { icon: FolderKanban, label: "Project architecture" },
@@ -28,6 +28,24 @@ const highlightsByLanguage = {
     { icon: Rocket, label: "Scalable solutions" },
   ],
 } as const;
+
+type OrbitRing = "outer" | "inner";
+
+const orbitTechIcons: { name: string; url: string; ring: OrbitRing }[] = [
+  { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg", ring: "outer" },
+  { name: "TypeScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg", ring: "outer" },
+  { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg", ring: "outer" },
+  { name: "Docker", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg", ring: "outer" },
+  { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg", ring: "inner" },
+  { name: "Tailwind CSS", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg", ring: "inner" },
+  { name: "Git", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg", ring: "inner" },
+  { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", ring: "inner" },
+];
+
+const orbitConfig: Record<OrbitRing, { radius: number; duration: number; direction: "normal" | "reverse" }> = {
+  outer: { radius: 120, duration: 26, direction: "normal" },
+  inner: { radius: 90, duration: 18, direction: "reverse" },
+};
 
 const AboutSection = () => {
   const { language } = useLanguage();
@@ -50,15 +68,53 @@ const AboutSection = () => {
         >
           <div className="md:w-1/3 flex justify-center">
             <motion.div
-              className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden border-2 border-primary/30 box-glow"
+              className="relative w-64 h-64 max-w-full flex items-center justify-center"
               whileHover={{ scale: 1.04, rotate: -1.5 }}
               transition={{ type: "spring", stiffness: 220, damping: 16 }}
             >
-              <img
-                src={personalInfo.profileImage}
-                alt={personalInfo.name}
-                className="w-full h-full object-cover"
-              />
+              <div className="absolute inset-0 pointer-events-none" aria-hidden>
+                {(Object.keys(orbitConfig) as OrbitRing[]).map((ring) => {
+                  const icons = orbitTechIcons.filter((icon) => icon.ring === ring);
+                  if (!icons.length) return null;
+                  const { radius, duration, direction } = orbitConfig[ring];
+                  return (
+                    <div
+                      key={ring}
+                      className={`orbit-layer ${ring === "outer" ? "orbit-layer-outer" : "orbit-layer-inner"}`}
+                      style={{
+                        width: radius * 2,
+                        height: radius * 2,
+                        animationDuration: `${duration}s`,
+                        animationDirection: direction,
+                      }}
+                    >
+                      {icons.map((icon, index) => {
+                        const angle = (360 / icons.length) * index;
+                        return (
+                          <span
+                            key={`${ring}-${icon.name}-${index}`}
+                            className="orbit-chip"
+                            style={{
+                              transform: `rotate(${angle}deg) translate(${radius}px) rotate(-${angle}deg)`,
+                              animationDelay: `${index * 0.25}s`,
+                            }}
+                            title={icon.name}
+                          >
+                            <img src={icon.url} alt={icon.name} />
+                          </span>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden border-2 border-primary/30 box-glow relative z-10 bg-card/80">
+                <img
+                  src={personalInfo.profileImage}
+                  alt={personalInfo.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </motion.div>
           </div>
           <div className="md:w-2/3">
