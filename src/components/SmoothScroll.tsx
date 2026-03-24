@@ -9,13 +9,13 @@ type SmoothScrollProps = {
 const SmoothScroll = ({ children }: SmoothScrollProps) => {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.65,
-      easing: (t: number) => 1 - Math.pow(1 - t, 2.6),
+      duration: 1.15,
+      easing: (t: number) => 1 - Math.pow(1 - t, 2.2),
       smoothWheel: true,
       syncTouch: true,
-      wheelMultiplier: 0.8,
-      touchMultiplier: 1.05,
-      lerp: 0.06,
+      wheelMultiplier: 0.92,
+      touchMultiplier: 1.02,
+      lerp: 0.085,
       infinite: false,
     });
 
