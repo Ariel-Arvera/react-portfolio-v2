@@ -30,7 +30,7 @@ const techCategories: Record<
       { name: "Tailwind", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
       { name: "Bootstrap", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
       { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg", functional: true },
-      { name: "Lit", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lit/lit-original.svg", functional: true },
+      { name: "Lit Elements", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lit/lit-original.svg", functional: true },
       { name: "Next.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg", functional: true },
     ],
   },
@@ -74,6 +74,7 @@ const techCategories: Record<
       { name: "Git", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
       { name: "GitHub", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
       { name: "Azure DevOps", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuredevops/azuredevops-original.svg" },
+      { name: "GitLab", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gitlab/gitlab-original.svg" },
       { name: "Docker", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
       { name: "Figma", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
       { name: "Jira", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jira/jira-original.svg" },
@@ -88,7 +89,7 @@ const categorySkillFilters: Record<CategoryId, string[]> = {
   frontend: ["html", "css", "ui", "ux", "responsive", "tailwind", "frontend", "react", "angular", "typescript", "next", "lit"],
   backend: ["api", "backend", "node", "java", "c#", ".net", "spring", "php", "laravel"],
   database: ["sql", "database", "postgres", "oracle", "server", "pl/sql", "mongo"],
-  tools: ["git", "docker", "azure", "figma", "jira", "scrum", "ci/cd", "devops", "postman"],
+  tools: ["git", "docker", "azure", "figma", "jira", "scrum", "ci/cd", "devops", "postman", "gitlab"],
 };
 
 const TechStackSection = () => {
