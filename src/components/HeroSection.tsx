@@ -17,6 +17,17 @@ const HeroSection = () => {
     [language, personalInfo.name]
   );
 
+  const heroQuotes = useMemo(
+    () => [
+      "“Antes era adicto a la televisión. Ahora la dejo encendida y me voy.” – Dwight Schrute | The Office",
+      "“Voy a hacer esto tan divertido que nadie va a trabajar.” – Michael Scott | The Office",
+      "“Si tienes tiempo para sentir pena por ti mismo, entonces tienes tiempo para superarte.” – Saitama | One Punch Man",
+      "“El problema no es el problema… el problema es tu actitud hacia el problema.” – Jack Sparrow",
+      "“Se vuelve más fácil… pero tienes que hacerlo todos los días. Esa es la parte difícil.” – BoJack Horseman",
+    ],
+    []
+  );
+
   const quickLinks = [
     {
       icon: Download,
@@ -47,6 +58,7 @@ const HeroSection = () => {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [displayedName, setDisplayedName] = useState(phrases[0] ?? "");
   const [isScrambling, setIsScrambling] = useState(false);
+  const [quoteIndex, setQuoteIndex] = useState(0);
 
   useEffect(() => {
     setDisplayedName(phrases[0] ?? "");
@@ -109,6 +121,13 @@ const HeroSection = () => {
     };
   }, [phraseIndex, phrases]);
 
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setQuoteIndex((prev) => (prev + 1) % heroQuotes.length);
+    }, 5000);
+    return () => window.clearInterval(id);
+  }, [heroQuotes.length]);
+
   return (
     <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Background banner */}
@@ -157,12 +176,14 @@ const HeroSection = () => {
             </span>
           </h1>
           <motion.p
-            initial={{ opacity: 0, y: 15 }}
+            key={quoteIndex}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55 }}
-            className="text-sm text-primary/80 tracking-wide"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.6 }}
+            className="text-sm text-primary/80 tracking-wide min-h-[1.5rem]"
           >
-            “Antes era adicto a la televisión. Ahora la dejo encendida y me voy.” – Dwight Schrute | The Office
+            {heroQuotes[quoteIndex]}
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
