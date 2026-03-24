@@ -6,9 +6,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import SmoothScroll from "@/components/SmoothScroll";
 import NeonCursor from "@/components/NeonCursor";
+import HiddenPulseDot from "@/components/HiddenPulseDot";
 import IntroTypingScreen from "@/components/IntroTypingScreen";
 import SecurityAlertGuard from "@/components/SecurityAlertGuard";
 import { LanguageProvider } from "@/context/language";
+import { InteractivityProvider } from "@/context/interactivity";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -32,17 +34,20 @@ const App = () => {
         <Toaster />
         <Sonner />
         <LanguageProvider>
-          <SmoothScroll>
-            <NeonCursor />
-            <SecurityAlertGuard />
-            <HashRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </HashRouter>
-          </SmoothScroll>
+          <InteractivityProvider>
+            <SmoothScroll>
+              <NeonCursor />
+              <HiddenPulseDot />
+              <SecurityAlertGuard />
+              <HashRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </HashRouter>
+            </SmoothScroll>
+          </InteractivityProvider>
         </LanguageProvider>
       </TooltipProvider>
     </QueryClientProvider>
