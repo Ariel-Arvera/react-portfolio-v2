@@ -144,9 +144,6 @@ const EducationSection = () => {
                     <span>{cert.duration}</span>
                     <span>{cert.date}</span>
                   </div>
-                  <span className={`certificate-card__badge ${cert.level.toLowerCase().includes("inter") ? "certificate-card__badge--highlight" : ""}`}>
-                    {cert.level}
-                  </span>
                 </motion.article>
               ))}
             </div>
