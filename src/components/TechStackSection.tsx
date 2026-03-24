@@ -22,14 +22,16 @@ const techCategories: Record<
       en: "Reactive UIs, UX and responsive design",
     },
     icons: [
+      { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+      { name: "TypeScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
+      { name: "JavaScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
       { name: "HTML5", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
       { name: "CSS3", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" },
-      { name: "JavaScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
-      { name: "TypeScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
-      { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
-      { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg" },
       { name: "Tailwind", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
       { name: "Bootstrap", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
+      { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg", functional: true },
+      { name: "Lit", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lit/lit-original.svg", functional: true },
+      { name: "Next.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg", functional: true },
     ],
   },
   backend: {
@@ -39,12 +41,13 @@ const techCategories: Record<
       en: "Scalable APIs and functional services",
     },
     icons: [
+      { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg" },
+      { name: ".NET", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg" },
       { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
-      { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", functional: true },
       { name: "Java", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg", functional: true },
-      { name: ".NET", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg", functional: true },
-      { name: "Express", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" },
-      { name: "Spring", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg", functional: true },
+      { name: "Spring Boot", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg", functional: true },
+      { name: "PHP", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg", functional: true },
+      { name: "Laravel", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg", functional: true },
     ],
   },
   database: {
@@ -54,10 +57,11 @@ const techCategories: Record<
       en: "Relational modeling and optimized queries",
     },
     icons: [
-      { name: "PostgreSQL", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" },
-      { name: "SQL Server", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" },
-      { name: "Oracle", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oracle/oracle-original.svg" },
+      { name: "SQL Express", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" },
       { name: "SQLite", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" },
+      { name: "PostgreSQL", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" },
+      { name: "MongoDB", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg", functional: true },
+      { name: "Oracle", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oracle/oracle-original.svg", functional: true },
     ],
   },
   tools: {
@@ -73,6 +77,7 @@ const techCategories: Record<
       { name: "Docker", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
       { name: "Figma", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
       { name: "Jira", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jira/jira-original.svg" },
+      { name: "Postman", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
     ],
   },
 };
@@ -80,10 +85,10 @@ const techCategories: Record<
 const categoryOrder: CategoryId[] = ["frontend", "backend", "database", "tools"];
 
 const categorySkillFilters: Record<CategoryId, string[]> = {
-  frontend: ["html", "css", "ui", "ux", "responsive", "tailwind", "frontend", "react", "angular"],
-  backend: ["api", "backend", "node", "java", "c#", ".net", "spring", "express"],
-  database: ["sql", "database", "postgres", "oracle", "server", "pl/sql"],
-  tools: ["git", "docker", "azure", "figma", "jira", "scrum", "ci/cd", "devops"],
+  frontend: ["html", "css", "ui", "ux", "responsive", "tailwind", "frontend", "react", "angular", "typescript", "next", "lit"],
+  backend: ["api", "backend", "node", "java", "c#", ".net", "spring", "php", "laravel"],
+  database: ["sql", "database", "postgres", "oracle", "server", "pl/sql", "mongo"],
+  tools: ["git", "docker", "azure", "figma", "jira", "scrum", "ci/cd", "devops", "postman"],
 };
 
 const TechStackSection = () => {
@@ -145,10 +150,10 @@ const TechStackSection = () => {
                     return (
                       <div className="flex w-full gap-3">
                         <div className="flex flex-wrap gap-3 flex-1 justify-start">
-                          {functionalIcons.map(renderIcon)}
+                          {mainIcons.map(renderIcon)}
                         </div>
                         <div className="flex flex-wrap gap-3 flex-1 justify-end">
-                          {mainIcons.map(renderIcon)}
+                          {functionalIcons.length ? functionalIcons.map(renderIcon) : null}
                         </div>
                       </div>
                     );
