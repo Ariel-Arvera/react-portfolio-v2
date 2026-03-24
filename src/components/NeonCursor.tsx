@@ -38,9 +38,31 @@ const NeonCursor = () => {
   useEffect(() => {
     if (!enabled) return;
 
+    const readDocumentZoom = () => {
+      if (typeof window === "undefined" || typeof document === "undefined") return 1;
+      const html = document.documentElement;
+      const inline = html.style.zoom;
+      if (inline) {
+        const parsed = Number.parseFloat(inline);
+        if (!Number.isNaN(parsed) && parsed > 0) return parsed;
+      }
+      const computed = window.getComputedStyle(html).getPropertyValue("zoom");
+      const parsed = Number.parseFloat(computed);
+      if (!Number.isNaN(parsed) && parsed > 0) return parsed;
+      return 1;
+    };
+
+    let zoomRatio = readDocumentZoom();
+
+    const refreshZoom = () => {
+      zoomRatio = readDocumentZoom();
+    };
+
     const onMove = (event: MouseEvent) => {
-      rawX.set(event.clientX - 7);
-      rawY.set(event.clientY - 7);
+      const adjustedX = zoomRatio ? event.clientX / zoomRatio : event.clientX;
+      const adjustedY = zoomRatio ? event.clientY / zoomRatio : event.clientY;
+      rawX.set(adjustedX - 7);
+      rawY.set(adjustedY - 7);
     };
 
     const onDown = () => {
@@ -70,6 +92,10 @@ const NeonCursor = () => {
     window.addEventListener("mousedown", onDown);
     window.addEventListener("scroll", updateSection, { passive: true });
     window.addEventListener("resize", updateSection);
+    window.addEventListener("resize", refreshZoom);
+    const zoomObserver = new MutationObserver(refreshZoom);
+    zoomObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["style", "class"] });
+    refreshZoom();
     updateSection();
 
     return () => {
@@ -77,6 +103,8 @@ const NeonCursor = () => {
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("scroll", updateSection);
       window.removeEventListener("resize", updateSection);
+      window.removeEventListener("resize", refreshZoom);
+      zoomObserver.disconnect();
     };
   }, [enabled, rawX, rawY]);
 
