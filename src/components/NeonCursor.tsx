@@ -9,10 +9,24 @@ const sectionColors: Record<string, string> = {
 
 const trackSections = ["hero", "about", "contact"];
 
+type CursorShape = "circle" | "star" | "moon" | "sun" | "dolphin" | "cow" | "shovel" | "banana" | "gun";
+
+const cursorShapeEmojis: Record<Exclude<CursorShape, "circle">, string> = {
+  star: "★",
+  moon: "🌙",
+  sun: "☀️",
+  dolphin: "🐬",
+  cow: "🐮",
+  shovel: "⛏️",
+  banana: "🍌",
+  gun: "🔫",
+};
+
 const NeonCursor = () => {
   const [enabled, setEnabled] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [cursorShape, setCursorShape] = useState<CursorShape>("circle");
   const rawX = useMotionValue(-100);
   const rawY = useMotionValue(-100);
   const x = useSpring(rawX, { stiffness: 1100, damping: 70, mass: 0.12 });
@@ -34,6 +48,22 @@ const NeonCursor = () => {
       document.body.classList.remove("neon-cursor");
     };
   }, [enabled]);
+
+  useEffect(() => {
+    const savedShape = localStorage.getItem("cursorShape") as CursorShape | null;
+    if (savedShape && (savedShape === "circle" || cursorShapeEmojis[savedShape as Exclude<CursorShape, "circle">])) {
+      setCursorShape(savedShape);
+    }
+
+    const handleShapeChange = (event: CustomEvent<{ shape: CursorShape }>) => {
+      const shape = event.detail.shape;
+      setCursorShape(shape);
+      localStorage.setItem("cursorShape", shape);
+    };
+
+    window.addEventListener("cursor-shape-change", handleShapeChange as EventListener);
+    return () => window.removeEventListener("cursor-shape-change", handleShapeChange as EventListener);
+  }, []);
 
   useEffect(() => {
     if (!enabled) return;
@@ -112,17 +142,32 @@ const NeonCursor = () => {
 
   if (!enabled) return null;
 
+  const isEmojiShape = cursorShape !== "circle";
+  const emoji = isEmojiShape ? cursorShapeEmojis[cursorShape as Exclude<CursorShape, "circle">] : null;
+
   return (
     <motion.div
       className="pointer-events-none fixed left-0 top-0 z-[9999]"
-      animate={{
-        scale: isClicking ? 2.4 : 1,
-        backgroundColor: color,
-        boxShadow: `0 0 12px ${color}, 0 0 24px ${color}`,
-      }}
+      animate={
+        isEmojiShape
+          ? { scale: isClicking ? 1.4 : 1, color: color, textShadow: `0 0 18px ${color}, 0 0 30px ${color}` }
+          : { scale: isClicking ? 2.4 : 1, backgroundColor: color, boxShadow: `0 0 12px ${color}, 0 0 24px ${color}` }
+      }
       transition={{ type: "spring", stiffness: 700, damping: 34, mass: 0.18 }}
-      style={{ x, y, width: 14, height: 14, borderRadius: 9999 }}
-    />
+      style={{
+        x,
+        y,
+        width: isEmojiShape ? 28 : 14,
+        height: isEmojiShape ? 28 : 14,
+        borderRadius: isEmojiShape ? 0 : 9999,
+        fontSize: 20,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {emoji}
+    </motion.div>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Palette, Paintbrush } from "lucide-react";
+import { Palette, Paintbrush, Pointer } from "lucide-react";
 
 type ComponentTheme = {
   primary: string;
@@ -47,19 +47,38 @@ const applyBackgroundTheme = (theme: BackgroundTheme) => {
   root.style.setProperty("--muted", theme.muted);
 };
 
+type CursorShape = "circle" | "star" | "moon" | "sun" | "dolphin" | "cow" | "shovel" | "banana" | "gun";
+
+const cursorShapes: { id: CursorShape; label: string; symbol: string }[] = [
+  { id: "circle", label: "Dot", symbol: "●" },
+  { id: "star", label: "Star", symbol: "★" },
+  { id: "moon", label: "Moon", symbol: "🌙" },
+  { id: "sun", label: "Sun", symbol: "☀️" },
+  { id: "dolphin", label: "Dolphin", symbol: "🐬" },
+  { id: "cow", label: "Cow", symbol: "🐮" },
+  { id: "shovel", label: "Shovel", symbol: "⛏️" },
+  { id: "banana", label: "Banana", symbol: "🍌" },
+  { id: "gun", label: "Pistol", symbol: "🔫" },
+];
+
 const ThemeToolbar = () => {
   const [componentIndex, setComponentIndex] = useState(1);
   const [backgroundIndex, setBackgroundIndex] = useState(0);
+  const [cursorShape, setCursorShape] = useState<CursorShape>("circle");
 
   useEffect(() => {
     const savedComponent = Number(localStorage.getItem("componentThemeIndex") ?? 1);
     const savedBackground = Number(localStorage.getItem("backgroundThemeIndex") ?? 0);
+    const savedCursor = (localStorage.getItem("cursorShape") as CursorShape | null) ?? "circle";
     const component = Number.isInteger(savedComponent) ? Math.max(0, Math.min(savedComponent, componentThemes.length - 1)) : 0;
     const background = Number.isInteger(savedBackground) ? Math.max(0, Math.min(savedBackground, backgroundThemes.length - 1)) : 0;
     setComponentIndex(component);
     setBackgroundIndex(background);
     applyComponentTheme(componentThemes[component]);
     applyBackgroundTheme(backgroundThemes[background]);
+    if (savedCursor && cursorShapes.some((shape) => shape.id === savedCursor)) {
+      setCursorShape(savedCursor);
+    }
   }, []);
 
   const handleComponentChange = (index: number) => {
@@ -72,6 +91,12 @@ const ThemeToolbar = () => {
     setBackgroundIndex(index);
     applyBackgroundTheme(backgroundThemes[index]);
     localStorage.setItem("backgroundThemeIndex", String(index));
+  };
+
+  const handleCursorChange = (shape: CursorShape) => {
+    setCursorShape(shape);
+    localStorage.setItem("cursorShape", shape);
+    window.dispatchEvent(new CustomEvent("cursor-shape-change", { detail: { shape } }));
   };
 
   return (
@@ -107,6 +132,25 @@ const ThemeToolbar = () => {
             className={`h-6 w-6 rounded-full border ${backgroundIndex === index ? "border-white" : "border-white/20"}`}
             style={{ background: `linear-gradient(135deg, hsl(${theme.background}), hsl(${theme.card}))` }}
           />
+        ))}
+      </div>
+
+      <div className="h-px bg-border/60" />
+
+      <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wider">
+        <Pointer className="w-3.5 h-3.5" /> Cursor
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        {cursorShapes.map((shape) => (
+          <button
+            key={shape.id}
+            type="button"
+            aria-label={`Cursor ${shape.label}`}
+            onClick={() => handleCursorChange(shape.id)}
+            className={`h-8 rounded-md border text-sm flex items-center justify-center transition ${cursorShape === shape.id ? "border-white text-white" : "border-white/20 text-muted-foreground"}`}
+          >
+            {shape.symbol}
+          </button>
         ))}
       </div>
     </aside>

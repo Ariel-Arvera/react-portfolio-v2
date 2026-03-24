@@ -9,7 +9,7 @@ const HeroSection = () => {
   const { personalInfo } = getCvData(language);
   const phrases = useMemo(
     () => [
-      language === "es" ? `Soy ${personalInfo.name}` : `I'm ${personalInfo.name}`,
+      language === "es" ? `Hola, Soy ${personalInfo.name}` : `Hello, I'm ${personalInfo.name}`,
       language === "es" ? "Diseño experiencias UI/UX" : "Designing bold UI/UX",
       "React · TypeScript · APIs",
       language === "es" ? "Código + IA + Creatividad" : "Code + AI + Creativity",
@@ -145,7 +145,7 @@ const HeroSection = () => {
         >
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-2">
             <span
-              className={`gradient-text inline-block whitespace-nowrap ${isScrambling ? "hero-glitch" : ""}`}
+              className={`gradient-text neon-matrix inline-block whitespace-nowrap ${isScrambling ? "hero-glitch" : ""}`}
               data-text={displayedName}
               style={{
                 fontFamily: '"JetBrains Mono", monospace',
