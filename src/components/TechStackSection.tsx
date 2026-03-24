@@ -30,7 +30,6 @@ const techCategories: Record<
       { name: "Tailwind", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
       { name: "Bootstrap", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
       { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg", functional: true },
-      { name: "Lit Elements", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lit/lit-original.svg", functional: true },
       { name: "Next.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg", functional: true },
     ],
   },
