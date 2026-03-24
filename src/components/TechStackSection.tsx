@@ -5,12 +5,14 @@ import { useLanguage } from "@/context/language";
 
 type CategoryId = "frontend" | "backend" | "database" | "tools";
 
+type TechIcon = { name: string; url: string; functional?: boolean };
+
 const techCategories: Record<
   CategoryId,
   {
     title: { es: string; en: string };
     description: { es: string; en: string };
-    icons: { name: string; url: string }[];
+    icons: TechIcon[];
   }
 > = {
   frontend: {
@@ -38,11 +40,11 @@ const techCategories: Record<
     },
     icons: [
       { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
-      { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg" },
-      { name: "Java", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
-      { name: ".NET", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg" },
+      { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", functional: true },
+      { name: "Java", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg", functional: true },
+      { name: ".NET", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg", functional: true },
       { name: "Express", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" },
-      { name: "Spring", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" },
+      { name: "Spring", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg", functional: true },
     ],
   },
   database: {
@@ -88,6 +90,7 @@ const TechStackSection = () => {
   const { language } = useLanguage();
   const { skills } = getCvData(language);
   const { ref, isVisible } = useScrollAnimation();
+  const functionalLabel = language === "es" ? "Funcional" : "Functional";
 
   return (
     <section id="tech-stack" className="section-padding bg-secondary/20">
@@ -124,10 +127,15 @@ const TechStackSection = () => {
                   {category.icons.map((icon) => (
                     <div
                       key={icon.name}
-                      className="w-14 h-14 rounded-2xl bg-secondary/40 border border-border/60 flex items-center justify-center hover:scale-110 hover:border-primary/60 transition-all duration-300"
+                      className="relative w-16 h-16 rounded-2xl bg-secondary/40 border border-border/60 flex items-center justify-center hover:scale-110 hover:border-primary/60 transition-all duration-300"
                       title={icon.name}
                     >
-                      <img src={icon.url} alt={icon.name} className="w-8 h-8 object-contain" />
+                      <img src={icon.url} alt={icon.name} className="w-9 h-9 object-contain" />
+                      {icon.functional ? (
+                        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-[2px] rounded-full bg-primary text-primary-foreground text-[10px] font-semibold uppercase tracking-wide shadow-[0_4px_14px_hsl(var(--primary)/0.4)]">
+                          {functionalLabel}
+                        </span>
+                      ) : null}
                     </div>
                   ))}
                 </div>
