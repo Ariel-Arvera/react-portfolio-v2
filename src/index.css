@@ -446,3 +446,40 @@
   transform: translate(-2px, 1px);
   animation: intro-glitch-scan 1s infinite reverse;
 }
+
+@keyframes glitch-card-flicker {
+  0% { clip-path: inset(0 0 80% 0); opacity: 0; transform: translateX(-4px); }
+  50% { clip-path: inset(20% 0 30% 0); opacity: 0.6; transform: translateX(4px); }
+  100% { clip-path: inset(70% 0 0 0); opacity: 0; transform: translateX(-3px); }
+}
+
+.glitch-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.glitch-card::before,
+.glitch-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, hsl(var(--primary) / 0.4), hsl(var(--glow-secondary) / 0.35));
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch-card::before {
+  animation: glitch-card-flicker 1.2s linear infinite;
+  animation-play-state: paused;
+}
+
+.glitch-card::after {
+  animation: glitch-card-flicker 1.2s linear infinite reverse;
+  animation-play-state: paused;
+}
+
+.glitch-card:hover::before,
+.glitch-card:hover::after {
+  animation-play-state: running;
+}

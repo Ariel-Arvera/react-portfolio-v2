@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Mail, MapPin, Clock, BookOpen, Music, Film, Gamepad2, Linkedin, Phone } from "lucide-react";
+import { Download, Mail, MapPin, Clock, BookOpen, Music, Film, Gamepad2, Linkedin, Phone, CookingPot } from "lucide-react";
 import { getCvData } from "@/data/cv-2";
 import { useLanguage } from "@/context/language";
 
@@ -10,6 +10,14 @@ const ContactSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   const contactCards = [
+    {
+      icon: Download,
+      title: language === "es" ? "Descargar CV" : "Download CV",
+      desc: language === "es" ? "Última versión en PDF" : "Latest PDF version",
+      detail: language === "es" ? "Abrir CV" : "Open CV",
+      link: personalInfo.cvUrl,
+      variant: "cv",
+    },
     {
       icon: Mail,
       title: "Email",
@@ -40,13 +48,13 @@ const ContactSection = () => {
           { icon: BookOpen, label: "Lectura" },
           { icon: Music, label: "Música" },
           { icon: Film, label: "Películas" },
-          { icon: Gamepad2, label: "Gaming" },
+          { icon: CookingPot, label: "Cocina" },
         ]
       : [
           { icon: BookOpen, label: "Reading" },
           { icon: Music, label: "Music" },
           { icon: Film, label: "Movies" },
-          { icon: Gamepad2, label: "Gaming" },
+          { icon: CookingPot, label: "Cooking" },
         ];
 
   return (
@@ -60,7 +68,7 @@ const ContactSection = () => {
           {language === "es" ? "Contacto" : "Get In Touch"}
         </motion.h2>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 justify-items-center">
           {contactCards.map((card, i) => (
             <motion.div
               key={card.title}
@@ -68,12 +76,21 @@ const ContactSection = () => {
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.1 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="glass-card p-6 text-center hover:box-glow transition-all duration-500 group"
+              className={`glass-card p-6 text-center hover:box-glow transition-all duration-500 group w-full max-w-sm ${card.variant === "cv" ? "glitch-card" : ""}`}
             >
               <card.icon className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
               <h3 className="text-lg font-bold text-foreground mb-1">{card.title}</h3>
               <p className="text-sm text-muted-foreground mb-3">{card.desc}</p>
-              {card.link ? (
+              {card.variant === "cv" ? (
+                <a
+                  href={card.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold rounded-full bg-primary text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.3)] hover:scale-105 transition"
+                >
+                  <Download className="w-4 h-4" /> {card.detail}
+                </a>
+              ) : card.link ? (
                 <a href={card.link} className="text-sm text-primary hover:underline">{card.detail}</a>
               ) : (
                 <p className="text-sm text-primary">{card.detail}</p>
@@ -83,12 +100,12 @@ const ContactSection = () => {
         </div>
 
         {/* Social & Hobbies row */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto place-items-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.5 }}
-            className="glass-card p-6 text-center"
+            className="glass-card p-6 text-center w-full max-w-md"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">{language === "es" ? "Redes" : "Social"}</h3>
             <div className="flex justify-center gap-4">
@@ -114,7 +131,7 @@ const ContactSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.6 }}
-            className="glass-card p-6 text-center"
+            className="glass-card p-6 text-center w-full max-w-md"
           >
             <h3 className="text-lg font-bold text-foreground mb-4">{language === "es" ? "Más allá del código" : "Beyond Coding"}</h3>
             <div className="flex justify-center gap-4">

@@ -17,6 +17,33 @@ const HeroSection = () => {
     [language, personalInfo.name]
   );
 
+  const quickLinks = [
+    {
+      icon: Download,
+      url: personalInfo.cvUrl,
+      label: language === "es" ? "Descargar CV" : "Download CV",
+      external: true,
+    },
+    {
+      icon: Linkedin,
+      url: personalInfo.linkedin,
+      label: "LinkedIn",
+      external: true,
+    },
+    {
+      icon: Mail,
+      url: `mailto:${personalInfo.email}`,
+      label: "Email",
+      external: false,
+    },
+    {
+      icon: MessageCircle,
+      url: "https://wa.me/+34695298272",
+      label: "WhatsApp",
+      external: true,
+    },
+  ];
+
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [displayedName, setDisplayedName] = useState(phrases[0] ?? "");
   const [isScrambling, setIsScrambling] = useState(false);
@@ -109,117 +136,78 @@ const HeroSection = () => {
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-glow-secondary/10 rounded-full blur-[100px] animate-float" style={{ animationDelay: "2s" }} />
       <div className="absolute inset-x-0 top-20 mx-auto h-px w-[70%] bg-gradient-to-r from-transparent via-primary/60 to-transparent animate-shimmer" />
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6">
-        <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-12">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex flex-col items-center text-center gap-6"
+        >
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-2">
+            <span
+              className={`gradient-text inline-block whitespace-nowrap ${isScrambling ? "hero-glitch" : ""}`}
+              data-text={displayedName}
+              style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                letterSpacing: "0.04em",
+                textShadow: "0 0 25px rgba(34, 211, 238, 0.45), 0 0 45px rgba(147, 51, 234, 0.35)",
+              }}
+            >
+              {displayedName}
+            </span>
+          </h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex-1 text-left"
+            transition={{ delay: 0.7 }}
+            className="text-muted-foreground text-sm"
           >
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span
-                className={`gradient-text inline-block whitespace-nowrap ${isScrambling ? "hero-glitch" : ""}`}
-                data-text={displayedName}
-                style={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  letterSpacing: "0.04em",
-                }}
-              >
-                {displayedName}
-              </span>
-            </h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="text-muted-foreground text-sm mb-4"
-            >
-              {personalInfo.location} · {personalInfo.availability}
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="text-muted-foreground/70 italic mb-8 max-w-xl"
-            >
-              {personalInfo.tagline}
-            </motion.p>
+            {personalInfo.location} · {personalInfo.availability}
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="text-muted-foreground/70 italic max-w-2xl"
+          >
+            {personalInfo.tagline}
+          </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-              className="flex flex-col sm:flex-row sm:items-center gap-4"
-            >
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all duration-300 hover:scale-105 animate-soft-pulse"
-              >
-                {language === "es" ? "Hablemos" : "Let's connect"} <ExternalLink className="w-4 h-4" />
-              </a>
-
-              <div className="flex items-center gap-3">
-                <a
-                  href={personalInfo.cvUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={language === "es" ? "Descargar CV" : "Download CV"}
-                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
-                >
-                  <Download className="w-4 h-4" />
-                </a>
-                <a
-                  href={personalInfo.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="LinkedIn"
-                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
-                >
-                  <Linkedin className="w-4 h-4" />
-                </a>
-                <a
-                  href={`mailto:${personalInfo.email}`}
-                  aria-label="Email"
-                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
-                >
-                  <Mail className="w-4 h-4" />
-                </a>
-                <a
-                  href="https://wa.me/+34695298272"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="WhatsApp"
-                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                </a>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Profile image */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-            className="flex-1 w-full flex justify-center md:justify-end"
-            whileHover={{ y: -8, rotate: -1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="flex flex-col sm:flex-row sm:items-center gap-4"
           >
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-primary/50 overflow-hidden animate-glow-pulse">
-              <img
-                src={personalInfo.profileImage}
-                alt={personalInfo.name}
-                className="w-full h-full object-cover"
-              />
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all duration-300 hover:scale-105 animate-soft-pulse"
+            >
+              {language === "es" ? "Hablemos" : "Let's connect"} <ExternalLink className="w-4 h-4" />
+            </a>
+
+            <div className="flex items-center justify-center gap-3">
+              {quickLinks.map(({ icon: Icon, url, label, external }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noreferrer" : undefined}
+                  aria-label={label}
+                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
+
 
       {/* Scroll indicator */}
       <motion.div
