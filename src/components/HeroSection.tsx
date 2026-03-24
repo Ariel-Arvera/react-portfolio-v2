@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowDown, ExternalLink } from "lucide-react";
+import { ArrowDown, Download, ExternalLink, Linkedin, Mail, MessageCircle } from "lucide-react";
 import { getCvData } from "@/data/cv-2";
 import { useLanguage } from "@/context/language";
 
@@ -150,6 +150,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1 }}
+              className="flex flex-col sm:flex-row sm:items-center gap-4"
             >
               <a
                 href="#contact"
@@ -161,6 +162,43 @@ const HeroSection = () => {
               >
                 {language === "es" ? "Hablemos" : "Let's connect"} <ExternalLink className="w-4 h-4" />
               </a>
+
+              <div className="flex items-center gap-3">
+                <a
+                  href={personalInfo.cvUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={language === "es" ? "Descargar CV" : "Download CV"}
+                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
+                >
+                  <Download className="w-4 h-4" />
+                </a>
+                <a
+                  href={personalInfo.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="LinkedIn"
+                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </a>
+                <a
+                  href={`mailto:${personalInfo.email}`}
+                  aria-label="Email"
+                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
+                >
+                  <Mail className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://wa.me/+34695298272"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="WhatsApp"
+                  className="w-11 h-11 rounded-full border border-border/60 bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200 hover:scale-105"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                </a>
+              </div>
             </motion.div>
           </motion.div>
 
