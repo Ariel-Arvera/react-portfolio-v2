@@ -124,20 +124,35 @@ const TechStackSection = () => {
                   <span className="text-xs text-muted-foreground/70">{category.icons.length} tech</span>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  {category.icons.map((icon) => (
-                    <div
-                      key={icon.name}
-                      className="relative w-16 h-16 rounded-2xl bg-secondary/40 border border-border/60 flex items-center justify-center hover:scale-110 hover:border-primary/60 transition-all duration-300"
-                      title={icon.name}
-                    >
-                      <img src={icon.url} alt={icon.name} className="w-9 h-9 object-contain" />
-                      {icon.functional ? (
-                        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-[2px] rounded-full bg-primary text-primary-foreground text-[10px] font-semibold uppercase tracking-wide shadow-[0_4px_14px_hsl(var(--primary)/0.4)]">
-                          {functionalLabel}
-                        </span>
-                      ) : null}
-                    </div>
-                  ))}
+                  {(() => {
+                    const functionalIcons = category.icons.filter((icon) => icon.functional);
+                    const mainIcons = category.icons.filter((icon) => !icon.functional);
+                    const renderIcon = (icon: TechIcon) => (
+                      <div
+                        key={`${categoryId}-${icon.name}`}
+                        className="relative w-16 h-16 rounded-2xl bg-secondary/40 border border-border/60 flex items-center justify-center hover:scale-110 hover:border-primary/60 transition-all duration-300"
+                        title={icon.name}
+                      >
+                        <img src={icon.url} alt={icon.name} className="w-9 h-9 object-contain" />
+                        {icon.functional ? (
+                          <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-[2px] rounded-full bg-primary text-primary-foreground text-[10px] font-semibold uppercase tracking-wide shadow-[0_4px_14px_hsl(var(--primary)/0.4)]">
+                            {functionalLabel}
+                          </span>
+                        ) : null}
+                      </div>
+                    );
+
+                    return (
+                      <div className="flex w-full gap-3">
+                        <div className="flex flex-wrap gap-3 flex-1 justify-start">
+                          {functionalIcons.map(renderIcon)}
+                        </div>
+                        <div className="flex flex-wrap gap-3 flex-1 justify-end">
+                          {mainIcons.map(renderIcon)}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
                 {(() => {
                   const keywords = categorySkillFilters[categoryId];
