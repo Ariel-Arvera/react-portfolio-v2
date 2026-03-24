@@ -18,6 +18,19 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      {/* Background banner */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: "url('/banner_developer-.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.28,
+          }}
+        />
+        <div className="absolute inset-0 bg-background/70" />
+      </div>
       {/* Background grid */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
