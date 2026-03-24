@@ -114,7 +114,7 @@ const HeroSection = () => {
       {/* Background banner */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 hero-banner"
           style={{
             backgroundImage: "url('/banner_developer-.jpg')",
             backgroundSize: "cover",
@@ -157,6 +157,14 @@ const HeroSection = () => {
             </span>
           </h1>
           <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55 }}
+            className="text-sm text-primary/80 tracking-wide"
+          >
+            “Antes era adicto a la televisión. Ahora la dejo encendida y me voy.” – Dwight Schrute | The Office
+          </motion.p>
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
@@ -177,19 +185,8 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
-            className="flex flex-col sm:flex-row sm:items-center gap-4"
+            className="flex flex-col items-center gap-4"
           >
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all duration-300 hover:scale-105 animate-soft-pulse"
-            >
-              {language === "es" ? "Hablemos" : "Let's connect"} <ExternalLink className="w-4 h-4" />
-            </a>
-
             <div className="flex items-center justify-center gap-3">
               {quickLinks.map(({ icon: Icon, url, label, external }) => (
                 <a
@@ -204,6 +201,17 @@ const HeroSection = () => {
                 </a>
               ))}
             </div>
+
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold bg-card/30 border border-white/15 text-primary hover:border-primary/50 hover:text-primary-foreground backdrop-blur-md transition-all duration-300 hover:shadow-[0_0_35px_rgba(0,255,255,0.25)]"
+            >
+              {language === "es" ? "Hablemos" : "Let's connect"} <ExternalLink className="w-4 h-4" />
+            </a>
           </motion.div>
         </motion.div>
       </div>
