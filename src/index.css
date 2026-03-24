@@ -152,15 +152,6 @@
   animation: marquee 25s linear infinite;
 }
 
-/* Typing cursor blink */
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-.typing-cursor {
-  animation: blink 1s infinite;
-}
-
 /* Glow pulse */
 @keyframes glow-pulse {
   0%, 100% { box-shadow: 0 0 20px hsl(var(--glow) / 0.2); }
@@ -422,6 +413,35 @@
 }
 
 .intro-typing-text::after {
+  color: #fb7185;
+  transform: translate(-2px, 1px);
+  animation: intro-glitch-scan 1s infinite reverse;
+}
+
+.hero-glitch {
+  position: relative;
+  display: inline-block;
+  text-shadow: 0 0 18px hsl(var(--primary) / 0.45), 0 0 36px hsl(var(--primary) / 0.2);
+  animation: intro-glitch-shift 1.2s steps(2, end) infinite;
+}
+
+.hero-glitch::before,
+.hero-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  text-shadow: none;
+}
+
+.hero-glitch::before {
+  color: #22d3ee;
+  transform: translate(1.5px, -1px);
+  animation: intro-glitch-scan 1s infinite;
+}
+
+.hero-glitch::after {
   color: #fb7185;
   transform: translate(-2px, 1px);
   animation: intro-glitch-scan 1s infinite reverse;

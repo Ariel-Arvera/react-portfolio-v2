@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useTypingEffect } from "@/hooks/useTypingEffect";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowDown, ExternalLink } from "lucide-react";
 import { getCvData } from "@/data/cv-2";
 import { useLanguage } from "@/context/language";
@@ -7,14 +7,80 @@ import { useLanguage } from "@/context/language";
 const HeroSection = () => {
   const { language } = useLanguage();
   const { personalInfo } = getCvData(language);
-  const typedName = useTypingEffect(
-    [
-      language === "es" ? `Hola! Soy ${personalInfo.name}...` : `Hi! I'm ${personalInfo.name}...`,
-      language === "es" ? "Apasionado por UI/UX..." : "Passionate about UI/UX...",
-      "React + TypeScript + APIs...",
+  const phrases = useMemo(
+    () => [
+      language === "es" ? `Soy ${personalInfo.name}` : `I'm ${personalInfo.name}`,
+      language === "es" ? "Diseño experiencias UI/UX" : "Designing bold UI/UX",
+      "React · TypeScript · APIs",
+      language === "es" ? "Código + IA + Creatividad" : "Code + AI + Creativity",
     ],
-    80, 50, 2000
+    [language, personalInfo.name]
   );
+
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [displayedName, setDisplayedName] = useState(phrases[0] ?? "");
+  const [isScrambling, setIsScrambling] = useState(false);
+
+  useEffect(() => {
+    setDisplayedName(phrases[0] ?? "");
+    setPhraseIndex(0);
+  }, [phrases]);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setPhraseIndex((current) => (current + 1) % phrases.length);
+    }, 3600);
+    return () => window.clearInterval(intervalId);
+  }, [phrases.length]);
+
+  useEffect(() => {
+    const target = phrases[phraseIndex];
+    if (!target) return;
+    const SCRAMBLE_CHARACTERS = "!<>-_\\/[]{}—=+*^?#________0123456789";
+    const queue = target.split("").map((char) => {
+      const start = Math.floor(Math.random() * 6);
+      const end = start + Math.floor(Math.random() * 6) + 6;
+      return { to: char, start, end };
+    });
+
+    let frame = 0;
+    let rafId: number;
+    setIsScrambling(true);
+
+    const update = () => {
+      let output = "";
+      let complete = 0;
+
+      for (const item of queue) {
+        if (frame >= item.end) {
+          output += item.to;
+          complete += 1;
+        } else if (frame >= item.start) {
+          const char = SCRAMBLE_CHARACTERS[Math.floor(Math.random() * SCRAMBLE_CHARACTERS.length)];
+          output += char;
+        } else {
+          output += " ";
+        }
+      }
+
+      setDisplayedName(output.trim() ? output : target);
+      frame += 1;
+
+      if (complete < queue.length) {
+        rafId = window.requestAnimationFrame(update);
+      } else {
+        setDisplayedName(target);
+        setIsScrambling(false);
+      }
+    };
+
+    rafId = window.requestAnimationFrame(update);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      setDisplayedName(target);
+      setIsScrambling(false);
+    };
+  }, [phraseIndex, phrases]);
 
   return (
     <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
@@ -53,15 +119,15 @@ const HeroSection = () => {
           >
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6">
               <span
-                className="gradient-text"
+                className={`gradient-text inline-block whitespace-nowrap ${isScrambling ? "hero-glitch" : ""}`}
+                data-text={displayedName}
                 style={{
                   fontFamily: '"JetBrains Mono", monospace',
                   letterSpacing: "0.04em",
                 }}
               >
-                {typedName}
+                {displayedName}
               </span>
-              <span className="typing-cursor text-primary">▌</span>
             </h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
