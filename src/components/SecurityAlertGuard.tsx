@@ -25,11 +25,6 @@ const SecurityAlertGuard = () => {
       }, 3000);
     };
 
-    const handleContextMenu = (event: MouseEvent) => {
-      event.preventDefault();
-      showAlert();
-    };
-
     const handleKeyDown = (event: KeyboardEvent) => {
       const blockedShortcut =
         event.key === "F12" ||
@@ -42,11 +37,9 @@ const SecurityAlertGuard = () => {
       showAlert();
     };
 
-    window.addEventListener("contextmenu", handleContextMenu);
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("contextmenu", handleContextMenu);
       window.removeEventListener("keydown", handleKeyDown);
       if (timerRef.current) {
         window.clearTimeout(timerRef.current);

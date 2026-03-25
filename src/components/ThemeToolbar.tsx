@@ -48,18 +48,13 @@ const applyBackgroundTheme = (theme: BackgroundTheme) => {
   root.style.setProperty("--muted", theme.muted);
 };
 
-type CursorShape = "circle" | "star" | "moon" | "sun" | "dolphin" | "cow" | "shovel" | "banana" | "gun";
+type CursorShape = "circle" | "star" | "cow" | "gun";
 
 const cursorShapes: { id: CursorShape; label: string; symbol: string }[] = [
   { id: "circle", label: "Dot", symbol: "●" },
   { id: "star", label: "Star", symbol: "★" },
-  { id: "moon", label: "Moon", symbol: "🌙" },
-  { id: "sun", label: "Sun", symbol: "☀️" },
-  { id: "dolphin", label: "Dolphin", symbol: "🐬" },
   { id: "cow", label: "Cow", symbol: "🐮" },
-  { id: "shovel", label: "Shovel", symbol: "⛏️" },
-  { id: "banana", label: "Banana", symbol: "🍌" },
-  { id: "gun", label: "Pistol", symbol: "🔫" },
+  { id: "gun", label: "Rocket", symbol: "🚀" },
 ];
 
 const ThemeToolbar = () => {

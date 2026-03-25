@@ -192,10 +192,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <motion.div
-        className="h-[2px] bg-cyan-300 shadow-[0_0_12px_#00ffff] origin-left"
-        style={{ scaleX: progressScaleX }}
-      />
+
 
       <AnimatePresence>
         {isMenuOpen ? (

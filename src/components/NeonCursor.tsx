@@ -9,22 +9,20 @@ const sectionColors: Record<string, string> = {
 
 const trackSections = ["hero", "about", "contact"];
 
-type CursorShape = "circle" | "star" | "moon" | "sun" | "dolphin" | "cow" | "shovel" | "banana" | "gun";
+type CursorShape = "circle" | "star" | "cow" | "gun";
 
 const cursorShapeEmojis: Record<Exclude<CursorShape, "circle">, string> = {
   star: "★",
-  moon: "🌙",
-  sun: "☀️",
-  dolphin: "🐬",
   cow: "🐮",
-  shovel: "⛏️",
-  banana: "🍌",
-  gun: "🔫",
+  gun: "🚀",
 };
 
 const NeonCursor = () => {
   const [enabled, setEnabled] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
+  const [isRightClick, setIsRightClick] = useState(false);
+  const [showCowMoo, setShowCowMoo] = useState(false);
+  const [gunShot, setGunShot] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [cursorShape, setCursorShape] = useState<CursorShape>("circle");
   const x = useMotionValue(-100);
@@ -134,7 +132,7 @@ const NeonCursor = () => {
       window.removeEventListener("resize", refreshZoom);
       zoomObserver.disconnect();
     };
-  }, [enabled]);
+  }, [enabled, cursorShape]);
 
   const color = useMemo(() => sectionColors[activeSection] ?? sectionColors.hero, [activeSection]);
 
@@ -143,29 +141,111 @@ const NeonCursor = () => {
   const isEmojiShape = cursorShape !== "circle";
   const emoji = isEmojiShape ? cursorShapeEmojis[cursorShape as Exclude<CursorShape, "circle">] : null;
 
+  const hiddenShapes = ["banana", "shovel"];
+  const shouldHideCursor = isEmojiShape && hiddenShapes.includes(cursorShape);
+
+  if (shouldHideCursor) return null;
+
+  const rightClickScale = 3;
+  const rightClickScaleEmoji = 1.8;
+
+  const getEmojiAnimation = () => {
+    const baseScale = isClicking ? 1.4 : 1;
+    const rightClickScaleVal = isRightClick ? rightClickScaleEmoji : 1;
+
+    switch (cursorShape) {
+      case "star":
+        return {
+          scale: isRightClick ? 1 : baseScale,
+          rotate: isRightClick ? 360 : 0,
+          textShadow: `0 0 18px ${color}, 0 0 30px ${color}`,
+        };
+      case "gun":
+        return {
+          scale: isRightClick ? 1.3 : baseScale,
+          rotate: isRightClick ? -20 : 0,
+          textShadow: `0 0 18px ${color}, 0 0 30px ${color}`,
+        };
+      default:
+        return {
+          scale: isRightClick ? rightClickScaleEmoji : baseScale,
+          textShadow: `0 0 18px ${color}, 0 0 30px ${color}`,
+        };
+    }
+  };
+
+  const emojiAnimation = isEmojiShape ? getEmojiAnimation() : {};
+
   return (
-    <motion.div
-      className="pointer-events-none fixed left-0 top-0 z-[9999]"
-      animate={
-        isEmojiShape
-          ? { scale: isClicking ? 1.4 : 1, color: color, textShadow: `0 0 18px ${color}, 0 0 30px ${color}` }
-          : { scale: isClicking ? 2.4 : 1, backgroundColor: color, boxShadow: `0 0 12px ${color}, 0 0 24px ${color}` }
-      }
-      transition={{ type: "spring", stiffness: 700, damping: 34, mass: 0.18 }}
-      style={{
-        x,
-        y,
-        width: isEmojiShape ? 28 : 14,
-        height: isEmojiShape ? 28 : 14,
-        borderRadius: isEmojiShape ? 0 : 9999,
-        fontSize: 20,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      {emoji}
-    </motion.div>
+    <>
+      <motion.div
+        className="pointer-events-none fixed left-0 top-0 z-[9999]"
+        animate={
+          isEmojiShape
+            ? emojiAnimation
+            : {
+                scale: isRightClick ? rightClickScale : isClicking ? 2.4 : 1,
+                backgroundColor: color,
+                boxShadow: `0 0 12px ${color}, 0 0 24px ${color}`,
+                borderRadius: isRightClick ? "50% 50% 50% 50% / 60% 60% 40% 40%" : 9999,
+              }
+        }
+        transition={{
+          rotate: cursorShape === "star" ? { duration: 1, repeat: Infinity, ease: "linear" } : { type: "spring", stiffness: 700, damping: 34, mass: 0.18 },
+          scale: { type: "spring", stiffness: 700, damping: 34, mass: 0.18 },
+          textShadow: { duration: 0.2 },
+          boxShadow: { duration: 0.2 },
+          backgroundColor: { duration: 0.2 },
+        }}
+        style={{
+          x,
+          y,
+          width: isEmojiShape ? 28 : 14,
+          height: isEmojiShape ? 28 : 14,
+          borderRadius: isEmojiShape ? 0 : 9999,
+          fontSize: 20,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: color,
+        }}
+      >
+        {emoji}
+      </motion.div>
+      {showCowMoo && (
+        <motion.div
+          initial={{ opacity: 0, y: 10, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -10, scale: 0.8 }}
+          transition={{ duration: 0.3 }}
+          className="pointer-events-none fixed z-[9999] text-white text-sm font-bold px-3 py-1.5 rounded-full"
+          style={{
+            left: x.get() + 20,
+            top: y.get() - 25,
+            backgroundColor: color,
+            boxShadow: `0 0 12px ${color}`,
+          }}
+        >
+          Moo!
+        </motion.div>
+      )}
+      {gunShot && (
+        <motion.div
+          initial={{ opacity: 1, scale: 1 }}
+          animate={{ opacity: 0, scale: 1.5 }}
+          transition={{ duration: 0.3 }}
+          className="pointer-events-none fixed z-[9998] rounded-full"
+          style={{
+            left: x.get() - 10,
+            top: y.get() - 10,
+            width: 40,
+            height: 40,
+            backgroundColor: "#ff4444",
+            boxShadow: `0 0 20px #ff0000, 0 0 40px #ff8800`,
+          }}
+        />
+      )}
+    </>
   );
 };
 

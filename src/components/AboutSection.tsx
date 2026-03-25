@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Code, Brain, Smartphone, Cloud, Database, Plug, FolderKanban, Users, Rocket } from "lucide-react";
 import { getCvData } from "@/data/cv-2";
@@ -47,9 +47,17 @@ const AboutSection = () => {
   const { aboutText, personalInfo } = getCvData(language);
   const highlights = highlightsByLanguage[language];
   const { ref, isVisible } = useScrollAnimation();
+  const [randomPositions, setRandomPositions] = useState<{ top: number; left: number }[] | null>(null);
+  const [isDisperse, setIsDisperse] = useState(false);
 
-  const goToTop = () => {
-    document.getElementById("hero")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const randomizePositions = () => {
+    const positions = floatingTechIcons.map(() => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+    }));
+    setIsDisperse(true);
+    setRandomPositions(positions);
+    setTimeout(() => setIsDisperse(false), 800);
   };
 
   return (
@@ -69,23 +77,26 @@ const AboutSection = () => {
               style={{ perspective: "1400px" }}
             >
               <div className="absolute inset-0 tech-float-layer" aria-hidden>
-                {floatingTechIcons.map((icon) => (
-                  <span
-                    key={`${icon.name}-${icon.left}-${icon.top}`}
-                    className="tech-float-chip"
-                    style={{
-                      top: `${icon.top}%`,
-                      left: `${icon.left}%`,
-                      animationDelay: `${icon.delay}s`,
-                      animationDuration: `${6 + icon.delay * 0.8}s`,
-                      ["--dx" as string]: `${icon.dx}px`,
-                      ["--dy" as string]: `${icon.dy}px`,
-                    } as CSSProperties}
-                    title={icon.name}
-                  >
-                    <img src={icon.url} alt={icon.name} />
-                  </span>
-                ))}
+                {floatingTechIcons.map((icon, index) => {
+                  const pos = randomPositions ? randomPositions[index] : null;
+                  return (
+                    <span
+                      key={`${icon.name}-${icon.left}-${icon.top}`}
+                      className={`tech-float-chip ${isDisperse ? "disperse" : ""}`}
+                      style={{
+                        top: pos ? `${pos.top}%` : `${icon.top}%`,
+                        left: pos ? `${pos.left}%` : `${icon.left}%`,
+                        animationDelay: `${icon.delay}s`,
+                        animationDuration: `${6 + icon.delay * 0.8}s`,
+                        ["--dx" as string]: `${icon.dx}px`,
+                        ["--dy" as string]: `${icon.dy}px`,
+                      } as CSSProperties}
+                      title={icon.name}
+                    >
+                      <img src={icon.url} alt={icon.name} />
+                    </span>
+                  );
+                })}
               </div>
               <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden border-2 border-primary/30 box-glow relative z-10 bg-card/80">
                 <img
@@ -94,39 +105,44 @@ const AboutSection = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
+              <button
+                type="button"
+                onClick={randomizePositions}
+                className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                {language === "es" ? "Aleatorio" : "Random"}
+              </button>
             </motion.div>
           </div>
           <div className="md:w-2/3">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-text">{language === "es" ? "Sobre Mí" : "About Me"}</h2>
-            <p className="text-muted-foreground mb-4 leading-relaxed text-justify" style={{ fontFamily: "Arial, sans-serif" }}>
+            <p className="text-muted-foreground leading-relaxed text-justify" style={{ fontFamily: "Arial, sans-serif", fontSize: "19px", lineHeight: "2" }}>
               {aboutText}
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {highlights.map(({ icon: Icon, label }, i) => (
-                <motion.div
-                  key={label}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.3 + i * 0.06 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="flex items-center gap-2 glass-card px-3 py-2 text-sm hover:border-primary/40 transition-all"
-                >
-                  <Icon className="w-4 h-4 text-primary shrink-0" />
-                  <span className="text-foreground/80">{label}</span>
-                </motion.div>
-              ))}
-            </div>
-            <div className="mt-8 flex justify-center">
-              <button
-                type="button"
-                onClick={goToTop}
-                className="glass-card px-5 py-2.5 text-sm font-medium text-foreground hover:text-primary hover:border-primary/40 hover:box-glow transition-all"
-              >
-                {language === "es" ? "Volver al inicio" : "Back to top"}
-              </button>
-            </div>
           </div>
         </motion.div>
+
+        <br />
+        <br />
+        <br />
+
+        <div className="mt-8 -mx-6 overflow-hidden">
+          <div className="flex animate-marquee gap-4 py-2">
+            {[...highlights, ...highlights, ...highlights].map(({ icon: Icon, label }, i) => (
+              <motion.div
+                key={`${label}-${i}`}
+                initial={{ opacity: 0, y: 15 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3 + i * 0.06 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="flex items-center gap-2 glass-card px-4 py-2.5 text-sm whitespace-nowrap hover:border-primary/40 transition-all"
+              >
+                <Icon className="w-4 h-4 text-primary shrink-0" />
+                <span className="text-foreground/80">{label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

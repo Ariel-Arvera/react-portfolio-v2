@@ -32,7 +32,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <LanguageProvider>
-          <NeonCursor />
+        <NeonCursor />
           <GlobalReveal />
           <SecurityAlertGuard />
           <HashRouter>
