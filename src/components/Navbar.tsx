@@ -7,7 +7,7 @@ type Item = { id: string; label: string };
 
 const labels: Record<"es" | "en", { brand: string; nav: Item[] }> = {
   es: {
-    brand: "DevPortfolio",
+    brand: "Ariel Vera",
     nav: [
       { id: "hero", label: "Inicio" },
       { id: "about", label: "Sobre Mí" },
