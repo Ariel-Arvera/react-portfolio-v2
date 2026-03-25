@@ -155,7 +155,7 @@ const HeroSection = () => {
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-glow-secondary/10 rounded-full blur-[100px] animate-float" style={{ animationDelay: "2s" }} />
       <div className="absolute inset-x-0 top-20 mx-auto h-px w-[70%] bg-gradient-to-r from-transparent via-primary/60 to-transparent animate-shimmer" />
 
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-6">
+      <div className="relative z-10 w-full px-6">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -197,7 +197,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="text-muted-foreground/70 italic max-w-2xl"
+            className="text-muted-foreground/70 italic"
           >
             {personalInfo.tagline}
           </motion.p>

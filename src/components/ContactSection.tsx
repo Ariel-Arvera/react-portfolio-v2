@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Download, Mail, MapPin, Clock, BookOpen, Music, Film, Gamepad2, Linkedin, Phone, CookingPot } from "lucide-react";
+import { Download, Mail, MapPin, Clock, BookOpen, Music, Film, Gamepad2, Linkedin, Phone, CookingPot, MessageCircle } from "lucide-react";
 import { getCvData } from "@/data/cv-2";
 import { useLanguage } from "@/context/language";
 
@@ -29,37 +29,54 @@ const ContactSection = () => {
       link: `mailto:${personalInfo.email}`,
     },
     {
+      icon: MessageCircle,
+      title: "WhatsApp",
+      desc: language === "es" ? "Escríbeme" : "Message me",
+      detail: "+34 695 298 272",
+      link: "https://wa.me/+34695298272",
+    },
+    {
       icon: MapPin,
       title: language === "es" ? "Ubicación" : "Location",
       desc: language === "es" ? "Actualmente en" : "Currently in",
       detail: personalInfo.location,
-    },
-    {
-      icon: Clock,
-      title: language === "es" ? "Disponibilidad" : "Availability",
-      desc: language === "es" ? "Estado laboral" : "Current status",
-      detail: personalInfo.availability,
     },
   ];
 
   const hobbies =
     language === "es"
       ? [
-          { icon: BookOpen, label: "Lectura" },
+          { icon: BookOpen, label: "Arte" },
           { icon: Music, label: "Música" },
           { icon: Film, label: "Películas" },
           { icon: CookingPot, label: "Cocina" },
         ]
       : [
-          { icon: BookOpen, label: "Reading" },
+          { icon: BookOpen, label: "Art" },
           { icon: Music, label: "Music" },
           { icon: Film, label: "Movies" },
           { icon: CookingPot, label: "Cooking" },
         ];
 
   return (
-    <section id="contact" className="section-padding bg-secondary/20">
-      <div className="container mx-auto px-6" ref={ref}>
+    <section id="contact" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden section-padding">
+      {/* Background banner */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div
+          className="absolute inset-0 hero-banner"
+          style={{
+            backgroundImage: "url('/banner_contactos.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.3,
+          }}
+        />
+      </div>
+      {/* Glow orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-float" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-glow-secondary/10 rounded-full blur-[100px] animate-float" style={{ animationDelay: "2s" }} />
+
+      <div className="container mx-auto px-6 relative z-10" ref={ref}>
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -76,9 +93,16 @@ const ContactSection = () => {
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.1 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className={`glass-card p-6 text-center hover:box-glow transition-all duration-500 group w-full max-w-sm ${card.variant === "cv" ? "glitch-card" : ""}`}
+              whileTap={{ scale: 0.98 }}
+              className="p-6 text-center transition-all duration-300 group w-full max-w-sm"
             >
-              <card.icon className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
+              {card.link ? (
+                <a href={card.link} target={card.link.startsWith("http") ? "_blank" : undefined} rel={card.link.startsWith("http") ? "noreferrer" : undefined}>
+                  <card.icon className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform cursor-pointer" />
+                </a>
+              ) : (
+                <card.icon className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
+              )}
               <h3 className="text-lg font-bold text-foreground mb-1">{card.title}</h3>
               <p className="text-sm text-muted-foreground mb-3">{card.desc}</p>
               {card.variant === "cv" ? (
@@ -100,40 +124,14 @@ const ContactSection = () => {
         </div>
 
         {/* Social & Hobbies row */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto place-items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.5 }}
-            className="glass-card p-6 text-center w-full max-w-md"
-          >
-            <h3 className="text-lg font-bold text-foreground mb-4">{language === "es" ? "Redes" : "Social"}</h3>
-            <div className="flex justify-center gap-4">
-              {[
-                { icon: Mail, url: `mailto:${personalInfo.email}` },
-                { icon: Linkedin, url: personalInfo.linkedin },
-                { icon: Phone, url: `tel:${personalInfo.phone.replace(/\s+/g, "")}` },
-              ].map(({ icon: Icon, url }, i) => (
-                <a
-                  key={i}
-                  href={url}
-                  target={url.startsWith("http") ? "_blank" : undefined}
-                  rel={url.startsWith("http") ? "noreferrer" : undefined}
-                  className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all hover:scale-110"
-                >
-                  <Icon className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-
+        <div className="grid md:grid-cols-1 gap-6 max-w-3xl mx-auto place-items-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.6 }}
-            className="glass-card p-6 text-center w-full max-w-md"
+            className="p-6 text-center w-full max-w-md"
           >
-            <h3 className="text-lg font-bold text-foreground mb-4">{language === "es" ? "Más allá del código" : "Beyond Coding"}</h3>
+            <h3 className="text-lg font-bold text-foreground mb-4">{language === "es" ? "Despues del código..." : "Beyond Coding"}</h3>
             <div className="flex justify-center gap-4">
               {hobbies.map(({ icon: Icon, label }) => (
                 <div key={label} className="flex flex-col items-center gap-1">

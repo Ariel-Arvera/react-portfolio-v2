@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 
 const sectionColors: Record<string, string> = {
   hero: "#f8ff3d",
@@ -27,10 +27,8 @@ const NeonCursor = () => {
   const [isClicking, setIsClicking] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [cursorShape, setCursorShape] = useState<CursorShape>("circle");
-  const rawX = useMotionValue(-100);
-  const rawY = useMotionValue(-100);
-  const x = useSpring(rawX, { stiffness: 1100, damping: 70, mass: 0.12 });
-  const y = useSpring(rawY, { stiffness: 1100, damping: 70, mass: 0.12 });
+  const x = useMotionValue(-100);
+  const y = useMotionValue(-100);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -91,8 +89,8 @@ const NeonCursor = () => {
     const onMove = (event: MouseEvent) => {
       const adjustedX = zoomRatio ? event.clientX / zoomRatio : event.clientX;
       const adjustedY = zoomRatio ? event.clientY / zoomRatio : event.clientY;
-      rawX.set(adjustedX - 7);
-      rawY.set(adjustedY - 7);
+      x.set(adjustedX - 7);
+      y.set(adjustedY - 7);
     };
 
     const onDown = () => {
@@ -136,7 +134,7 @@ const NeonCursor = () => {
       window.removeEventListener("resize", refreshZoom);
       zoomObserver.disconnect();
     };
-  }, [enabled, rawX, rawY]);
+  }, [enabled]);
 
   const color = useMemo(() => sectionColors[activeSection] ?? sectionColors.hero, [activeSection]);
 

@@ -98,8 +98,21 @@ const TechStackSection = () => {
   const functionalLabel = language === "es" ? "Funcional" : "Functional";
 
   return (
-    <section id="tech-stack" className="section-padding bg-secondary/20">
-      <div className="container mx-auto px-6" ref={ref}>
+    <section id="tech-stack" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden section-padding">
+      {/* Background banner */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div
+          className="absolute inset-0 hero-banner"
+          style={{
+            backgroundImage: "url('/banner_tecnology.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.3,
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10" ref={ref}>
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -108,7 +121,7 @@ const TechStackSection = () => {
           {language === "es" ? "Stack Tecnológico" : "Tech Stack"}
         </motion.h2>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-4">
           {categoryOrder.map((categoryId, index) => {
             const category = techCategories[categoryId];
             const title = category.title[language];
@@ -119,28 +132,24 @@ const TechStackSection = () => {
                 initial={{ opacity: 0, y: 24 }}
                 animate={isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.2 + index * 0.1 }}
-                className="glass-card p-6 flex flex-col gap-4"
+                className="p-4 flex flex-row items-center gap-6"
               >
                 <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-2xl font-semibold text-foreground">{title}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">{desc}</p>
-                  </div>
-                  <span className="text-xs text-muted-foreground/70">{category.icons.length} tech</span>
+                  <h3 className="text-lg font-semibold text-foreground min-w-[120px]">{title}</h3>
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-6">
                   {(() => {
-                    const functionalIcons = category.icons.filter((icon) => icon.functional);
-                    const mainIcons = category.icons.filter((icon) => !icon.functional);
                     const renderIcon = (icon: TechIcon) => (
                       <div
                         key={`${categoryId}-${icon.name}`}
-                        className="relative w-16 h-16 rounded-2xl bg-secondary/40 border border-border/60 flex items-center justify-center hover:scale-110 hover:border-primary/60 transition-all duration-300"
-                        title={icon.name}
+                        className="group relative w-16 h-16 rounded-xl flex items-center justify-center hover:scale-110 transition-all duration-300 drop-shadow-lg"
                       >
-                        <img src={icon.url} alt={icon.name} className="w-9 h-9 object-contain" />
+                        <img src={icon.url} alt={icon.name} className="w-10 h-10 object-contain" />
+                        <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-card border border-border text-xs text-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                          {icon.name}
+                        </span>
                         {icon.functional ? (
-                          <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-[2px] rounded-full bg-primary text-primary-foreground text-[10px] font-semibold uppercase tracking-wide shadow-[0_4px_14px_hsl(var(--primary)/0.4)]">
+                          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-1 py-0.5 rounded-full bg-primary text-primary-foreground text-[8px] font-semibold uppercase">
                             {functionalLabel}
                           </span>
                         ) : null}
@@ -148,33 +157,12 @@ const TechStackSection = () => {
                     );
 
                     return (
-                      <div className="flex w-full gap-3">
-                        <div className="flex flex-wrap gap-3 flex-1 justify-start">
-                          {mainIcons.map(renderIcon)}
-                        </div>
-                        <div className="flex flex-wrap gap-3 flex-1 justify-end">
-                          {functionalIcons.length ? functionalIcons.map(renderIcon) : null}
-                        </div>
+                      <div className="flex flex-wrap gap-4 justify-center">
+                        {category.icons.map(renderIcon)}
                       </div>
                     );
                   })()}
                 </div>
-                {(() => {
-                  const keywords = categorySkillFilters[categoryId];
-                  const badgeSkills = skills
-                    .filter((skill) => keywords.some((keyword) => skill.toLowerCase().includes(keyword)))
-                    .slice(0, 4);
-                  if (!badgeSkills.length) return null;
-                  return (
-                    <div className="flex flex-wrap gap-2 text-xs text-muted-foreground/80">
-                      {badgeSkills.map((skill) => (
-                        <span key={`${categoryId}-${skill}`} className="px-2 py-1 rounded-full bg-secondary/40 border border-border/50">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  );
-                })()}
               </motion.article>
             );
           })}
