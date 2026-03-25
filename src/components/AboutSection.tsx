@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, type CSSProperties } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Code, Brain, Smartphone, Cloud, Database, Plug, FolderKanban, Users, Rocket } from "lucide-react";
+import { Code, Brain, Smartphone, Database, Plug, FolderKanban, Users, Rocket } from "lucide-react";
 import { getCvData } from "@/data/cv-2";
 import { useLanguage } from "@/context/language";
 
@@ -10,7 +10,6 @@ const highlightsByLanguage = {
     { icon: Code, label: "Desarrollo Full Stack" },
     { icon: Brain, label: "Aprendizaje continuo" },
     { icon: Smartphone, label: "Diseño responsive" },
-    // { icon: Cloud, label: "Integración cloud" },
     { icon: Database, label: "Gestión de bases de datos" },
     { icon: Plug, label: "Integración de APIs" },
     { icon: FolderKanban, label: "Arquitectura de proyectos" },
@@ -21,7 +20,6 @@ const highlightsByLanguage = {
     { icon: Code, label: "Full Stack Development" },
     { icon: Brain, label: "Continuous learning" },
     { icon: Smartphone, label: "Responsive design" },
-    // { icon: Cloud, label: "Cloud integration" },
     { icon: Database, label: "Database management" },
     { icon: Plug, label: "API integration" },
     { icon: FolderKanban, label: "Project architecture" },
@@ -47,18 +45,6 @@ const AboutSection = () => {
   const { aboutText, personalInfo } = getCvData(language);
   const highlights = highlightsByLanguage[language];
   const { ref, isVisible } = useScrollAnimation();
-  const [randomPositions, setRandomPositions] = useState<{ top: number; left: number }[] | null>(null);
-  const [isDisperse, setIsDisperse] = useState(false);
-
-  const randomizePositions = () => {
-    const positions = floatingTechIcons.map(() => ({
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-    }));
-    setIsDisperse(true);
-    setRandomPositions(positions);
-    setTimeout(() => setIsDisperse(false), 800);
-  };
 
   return (
     <section id="about" className="section-padding">
@@ -77,26 +63,23 @@ const AboutSection = () => {
               style={{ perspective: "1400px" }}
             >
               <div className="absolute inset-0 tech-float-layer" aria-hidden>
-                {floatingTechIcons.map((icon, index) => {
-                  const pos = randomPositions ? randomPositions[index] : null;
-                  return (
-                    <span
-                      key={`${icon.name}-${icon.left}-${icon.top}`}
-                      className={`tech-float-chip ${isDisperse ? "disperse" : ""}`}
-                      style={{
-                        top: pos ? `${pos.top}%` : `${icon.top}%`,
-                        left: pos ? `${pos.left}%` : `${icon.left}%`,
-                        animationDelay: `${icon.delay}s`,
-                        animationDuration: `${6 + icon.delay * 0.8}s`,
-                        ["--dx" as string]: `${icon.dx}px`,
-                        ["--dy" as string]: `${icon.dy}px`,
-                      } as CSSProperties}
-                      title={icon.name}
-                    >
-                      <img src={icon.url} alt={icon.name} />
-                    </span>
-                  );
-                })}
+                {floatingTechIcons.map((icon) => (
+                  <span
+                    key={`${icon.name}-${icon.left}-${icon.top}`}
+                    className="tech-float-chip"
+                    style={{
+                      top: `${icon.top}%`,
+                      left: `${icon.left}%`,
+                      animationDelay: `${icon.delay}s`,
+                      animationDuration: `${6 + icon.delay * 0.8}s`,
+                      ["--dx" as string]: `${icon.dx}px`,
+                      ["--dy" as string]: `${icon.dy}px`,
+                    } as CSSProperties}
+                    title={icon.name}
+                  >
+                    <img src={icon.url} alt={icon.name} />
+                  </span>
+                ))}
               </div>
               <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden border-2 border-primary/30 box-glow relative z-10 bg-card/80">
                 <img
@@ -105,13 +88,6 @@ const AboutSection = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <button
-                type="button"
-                onClick={randomizePositions}
-                className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-muted-foreground hover:text-primary transition-colors"
-              >
-                {language === "es" ? "Aleatorio" : "Random"}
-              </button>
             </motion.div>
           </div>
           <div className="md:w-2/3">

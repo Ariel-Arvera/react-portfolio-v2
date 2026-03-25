@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
+import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { Code2, Menu, X } from "lucide-react";
 import { useLanguage } from "@/context/language";
 
@@ -30,14 +30,9 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [glitchTarget, setGlitchTarget] = useState<string | null>(null);
-  const { scrollY, scrollYProgress } = useScroll();
+  const { scrollY } = useScroll();
 
   const navItems = useMemo(() => labels[language].nav, [language]);
-  const progressScaleX = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 22,
-    restDelta: 0.001,
-  });
 
   useEffect(() => {
     const unsubscribe = scrollY.on("change", (current) => {
