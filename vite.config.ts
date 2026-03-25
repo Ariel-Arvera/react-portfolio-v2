@@ -2,11 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
-const githubPagesBase = "/react-portfolio-reimagined/";
-
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => ({
-  base: command === "build" ? githubPagesBase : "/",
+export default defineConfig({
+  base: "/",
   server: {
     host: "::",
     port: 8080,
@@ -20,4 +18,4 @@ export default defineConfig(({ command }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-}));
+});

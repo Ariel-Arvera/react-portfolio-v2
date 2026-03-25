@@ -4,8 +4,8 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import SmoothScroll from "@/components/SmoothScroll";
 import NeonCursor from "@/components/NeonCursor";
+import GlobalReveal from "@/components/GlobalReveal";
 import IntroTypingScreen from "@/components/IntroTypingScreen";
 import SecurityAlertGuard from "@/components/SecurityAlertGuard";
 import { LanguageProvider } from "@/context/language";
@@ -32,17 +32,16 @@ const App = () => {
         <Toaster />
         <Sonner />
         <LanguageProvider>
-          <SmoothScroll>
-            <NeonCursor />
-            <SecurityAlertGuard />
-            <HashRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </HashRouter>
-          </SmoothScroll>
+          <NeonCursor />
+          <GlobalReveal />
+          <SecurityAlertGuard />
+          <HashRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </HashRouter>
         </LanguageProvider>
       </TooltipProvider>
     </QueryClientProvider>

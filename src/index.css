@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+:root {
     --background: 220 20% 6%;
     --foreground: 210 20% 92%;
 
@@ -171,6 +171,17 @@
   animation: float 4s ease-in-out infinite;
 }
 
+.reveal-target {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-target[data-reveal="visible"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 @keyframes shimmer {
   0% { transform: translateX(-18%); opacity: 0.25; }
   50% { opacity: 0.9; }
@@ -294,6 +305,115 @@
 
 .certificate-card__badge--highlight {
   background: linear-gradient(120deg, hsl(var(--primary)), hsl(var(--glow-secondary)));
+}
+
+.cert-ribbon {
+  position: relative;
+  padding: 0.75rem 1rem 0.85rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(30, 30, 36, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  width: 100%;
+}
+
+.cert-ribbon::before,
+.cert-ribbon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 12px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.cert-ribbon::before {
+  left: -14px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.cert-ribbon::after {
+  right: -14px;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.cert-ribbon__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #ff9d9d;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.4rem;
+}
+
+.cert-ribbon__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f2f2f2;
+  margin-bottom: 0.2rem;
+}
+
+.cert-ribbon__meta {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.rpg-profile {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.8));
+  padding: 2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.rpg-profile__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rpg-profile__subtitle {
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.rpg-profile__title {
+  font-size: clamp(1.8rem, 4vw, 2.3rem);
+  color: #fff;
+}
+
+.rpg-profile__role {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.rpg-profile__pane {
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 1rem;
+}
+
+.rpg-profile__pane dl div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rpg-profile__stat {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(12, 12, 17, 0.65);
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: #fff;
 }
 
 @keyframes confetti-drop {

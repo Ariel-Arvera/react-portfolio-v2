@@ -54,7 +54,7 @@ const EducationSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          className="text-center max-w-3xl mx-auto mb-14"
+          className="text-center max-w-3xl mx-auto mb-8"
         >
           <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground mb-3">
             {language === "es" ? "Mi CV" : "My CV"}
@@ -62,19 +62,6 @@ const EducationSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">
             {language === "es" ? "Formación y Certificaciones" : "Education & Certifications"}
           </h2>
-          <p className="text-muted-foreground leading-relaxed mb-5">
-            {language === "es"
-              ? "Resumen actualizado de mis estudios formales y certificaciones clave."
-              : "Latest snapshot of my formal education and key certifications."}
-          </p>
-          <a
-            href={personalInfo.cvUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] transition-all hover:scale-105"
-          >
-            {language === "es" ? "Descargar CV" : "Download CV"} <ExternalLink className="w-4 h-4" />
-          </a>
         </motion.div>
 
         <div className="space-y-12">
@@ -127,24 +114,21 @@ const EducationSection = () => {
               <h3 className="text-2xl font-semibold text-foreground">{language === "es" ? "Certificaciones" : "Certificates"}</h3>
               <span className="text-sm text-muted-foreground">{certificates.length} {language === "es" ? "logros" : "achievements"}</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {certificates.map((cert, i) => (
-                <motion.article
+                <motion.div
                   key={`${cert.title}-${cert.date}`}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={isVisible ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.3 + i * 0.05 }}
-                  className="certificate-card"
+                  className="cert-ribbon"
                 >
-                  <div className="certificate-card__ribbon" aria-hidden />
-                  <Award className="w-5 h-5 text-primary mx-auto mb-3" />
-                  <h4 className="text-sm font-semibold text-foreground mb-1 line-clamp-2">{cert.title}</h4>
-                  <p className="text-[11px] text-muted-foreground mb-2 line-clamp-2">{cert.issuer}</p>
-                  <div className="text-[10px] text-muted-foreground/80 flex flex-col gap-1">
-                    <span>{cert.duration}</span>
-                    <span>{cert.date}</span>
+                  <div className="cert-ribbon__label">
+                    <Award className="w-3 h-3" /> {language === "es" ? "Certificado" : "Certificate"}
                   </div>
-                </motion.article>
+                  <p className="cert-ribbon__title">{cert.title}</p>
+                  <p className="cert-ribbon__meta">{cert.issuer}</p>
+                </motion.div>
               ))}
             </div>
           </div>

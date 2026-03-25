@@ -58,17 +58,22 @@ const SecurityAlertGuard = () => {
     <AnimatePresence>
       {activeMessage ? (
         <motion.div
-          initial={{ opacity: 0, y: -20, scale: 0.96 }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -16, scale: 0.96 }}
-          transition={{ duration: 0.2 }}
-          className="fixed top-5 left-1/2 -translate-x-1/2 z-[140] w-[min(92vw,640px)]"
+          exit={{ opacity: 0, y: 20, scale: 0.95 }}
+          transition={{ duration: 0.25 }}
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[140] w-[min(92vw,560px)]"
           role="alert"
           aria-live="assertive"
         >
-          <div className="glass-card border border-primary/35 bg-card/90 p-4 md:p-5 shadow-[0_0_30px_hsl(var(--primary)/0.3)]">
-            {activeMessage.split("\n").map((line) => (
-              <p key={line} className="text-sm md:text-base text-foreground leading-relaxed">
+          <div className="rounded-2xl border border-red-500/40 bg-black/80 p-4 md:p-5 shadow-[0_0_40px_rgba(255,0,0,0.35)] backdrop-blur">
+            {activeMessage.split("\n").map((line, index) => (
+              <p
+                key={line}
+                className={`text-center leading-relaxed ${
+                  index === 0 ? "text-red-400 text-sm md:text-base font-semibold tracking-wide" : "text-red-200 text-xs md:text-sm"
+                }`}
+              >
                 {line}
               </p>
             ))}

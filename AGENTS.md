@@ -9,6 +9,7 @@ Guidance for coding agents working in `react-portfolio-reimagined`.
 - Animations: `framer-motion` and custom CSS animations.
 - Data/style approach: local TS data files + CSS variables in `src/index.css`.
 - Package manager: npm (`package-lock.json` is present).
+- Responde siempre en Español
 
 ## 2) Build, Lint, Test Commands
 
