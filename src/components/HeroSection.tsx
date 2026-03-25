@@ -160,11 +160,11 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-col items-center text-center gap-6"
+          className="flex flex-col items-center text-center gap-6 overflow-hidden"
         >
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-2">
             <span
-              className={`gradient-text neon-matrix inline-block whitespace-nowrap ${isScrambling ? "hero-glitch" : ""}`}
+              className={`gradient-text neon-matrix inline-block break-words ${isScrambling ? "hero-glitch" : ""}`}
               data-text={displayedName}
               style={{
                 fontFamily: '"JetBrains Mono", monospace',

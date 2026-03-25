@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Palette, Paintbrush, Pointer } from "lucide-react";
+import { Palette, Paintbrush, Pointer, ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/context/language";
 
 type ComponentTheme = {
   primary: string;
@@ -62,14 +63,17 @@ const cursorShapes: { id: CursorShape; label: string; symbol: string }[] = [
 ];
 
 const ThemeToolbar = () => {
+  const { language } = useLanguage();
   const [componentIndex, setComponentIndex] = useState(1);
   const [backgroundIndex, setBackgroundIndex] = useState(0);
   const [cursorShape, setCursorShape] = useState<CursorShape>("circle");
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const savedComponent = Number(localStorage.getItem("componentThemeIndex") ?? 1);
     const savedBackground = Number(localStorage.getItem("backgroundThemeIndex") ?? 0);
     const savedCursor = (localStorage.getItem("cursorShape") as CursorShape | null) ?? "circle";
+    const savedVisibility = localStorage.getItem("toolbarVisible");
     const component = Number.isInteger(savedComponent) ? Math.max(0, Math.min(savedComponent, componentThemes.length - 1)) : 0;
     const background = Number.isInteger(savedBackground) ? Math.max(0, Math.min(savedBackground, backgroundThemes.length - 1)) : 0;
     setComponentIndex(component);
@@ -78,6 +82,9 @@ const ThemeToolbar = () => {
     applyBackgroundTheme(backgroundThemes[background]);
     if (savedCursor && cursorShapes.some((shape) => shape.id === savedCursor)) {
       setCursorShape(savedCursor);
+    }
+    if (savedVisibility !== null) {
+      setIsVisible(savedVisibility === "true");
     }
   }, []);
 
@@ -99,8 +106,32 @@ const ThemeToolbar = () => {
     window.dispatchEvent(new CustomEvent("cursor-shape-change", { detail: { shape } }));
   };
 
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+    localStorage.setItem("toolbarVisible", String(!isVisible));
+  };
+
   return (
-    <aside className="fixed right-3 md:right-5 top-1/2 -translate-y-1/2 z-[60] flex flex-col gap-3 rounded-xl border border-border/60 bg-card/90 backdrop-blur p-3 shadow-xl">
+    <>
+      <button
+        type="button"
+        aria-label={isVisible ? "Hide toolbar" : "Show toolbar"}
+        onClick={toggleVisibility}
+        className={`fixed right-3 md:right-5 top-1/2 -translate-y-1/2 z-[60] rounded-full border border-border/60 bg-card/90 backdrop-blur shadow-xl flex items-center gap-2 px-3 py-2 transition-all duration-300 hover:bg-secondary ${!isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      >
+        <span className="text-xs text-muted-foreground whitespace-nowrap">{language === "es" ? "Mostrar" : "Show"}</span>
+        <ChevronRight className="w-4 h-4" />
+      </button>
+      <aside className={`fixed right-3 md:right-5 top-1/2 -translate-y-1/2 z-[60] flex flex-col gap-3 rounded-xl border border-border/60 bg-card/90 backdrop-blur p-3 shadow-xl transition-all duration-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"}`}>
+      <button
+        type="button"
+        aria-label="Hide toolbar"
+        onClick={toggleVisibility}
+        className="absolute -left-16 top-1/2 -translate-y-1/2 rounded-full border border-border/60 bg-card flex items-center gap-1 px-2 py-1 hover:bg-secondary transition-colors"
+      >
+        <ChevronLeft className="w-3 h-3" />
+        <span className="text-xs text-muted-foreground whitespace-nowrap">{language === "es" ? "Ocultar" : "Hide"}</span>
+      </button>
       <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wider">
         <Palette className="w-3.5 h-3.5" /> UI
       </div>
@@ -154,6 +185,7 @@ const ThemeToolbar = () => {
         ))}
       </div>
     </aside>
+    </>
   );
 };
 

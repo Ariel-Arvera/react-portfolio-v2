@@ -5,7 +5,7 @@ import { useLanguage } from "@/context/language";
 
 type CategoryId = "frontend" | "backend" | "database" | "tools";
 
-type TechIcon = { name: string; url: string; functional?: boolean };
+type TechIcon = { name: string; url: string; functional?: boolean; children?: TechIcon[] };
 
 const techCategories: Record<
   CategoryId,
@@ -22,15 +22,20 @@ const techCategories: Record<
       en: "Reactive UIs, UX and responsive design",
     },
     icons: [
-      { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
       { name: "TypeScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
       { name: "JavaScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
       { name: "HTML5", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
       { name: "CSS3", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" },
       { name: "Tailwind", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
       { name: "Bootstrap", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
+      { 
+        name: "React", 
+        url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
+        children: [
+          { name: "Next.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg", functional: true },
+        ]
+      },
       { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg", functional: true },
-      { name: "Next.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg", functional: true },
     ],
   },
   backend: {
@@ -40,13 +45,25 @@ const techCategories: Record<
       en: "Scalable APIs and functional services",
     },
     icons: [
+      { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
       { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg" },
       { name: ".NET", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg" },
-      { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
-      { name: "Java", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg", functional: true },
-      { name: "Spring Boot", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg", functional: true },
-      { name: "PHP", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg", functional: true },
-      { name: "Laravel", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg", functional: true },
+      { 
+        name: "Java", 
+        url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg", 
+        functional: true,
+        children: [
+          { name: "Spring Boot", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg", functional: true },
+        ]
+      },
+      { 
+        name: "PHP", 
+        url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg", 
+        functional: true,
+        children: [
+          { name: "Laravel", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg", functional: true },
+        ]
+      },
     ],
   },
   database: {
@@ -56,8 +73,8 @@ const techCategories: Record<
       en: "Relational modeling and optimized queries",
     },
     icons: [
-      { name: "SQL Express", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" },
       { name: "SQLite", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" },
+      { name: "SQL Express", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" },
       { name: "PostgreSQL", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" },
       { name: "MongoDB", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg", functional: true },
       { name: "Oracle", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oracle/oracle-original.svg", functional: true },
@@ -72,9 +89,9 @@ const techCategories: Record<
     icons: [
       { name: "Git", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
       { name: "GitHub", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
-      { name: "Azure DevOps", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuredevops/azuredevops-original.svg" },
       { name: "GitLab", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gitlab/gitlab-original.svg" },
       { name: "Docker", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
+      { name: "Azure DevOps", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuredevops/azuredevops-original.svg" },
       { name: "Figma", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
       { name: "Jira", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jira/jira-original.svg" },
       { name: "Postman", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" },
@@ -108,7 +125,7 @@ const TechStackSection = () => {
           {language === "es" ? "Stack Tecnológico" : "Tech Stack"}
         </motion.h2>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-4">
           {categoryOrder.map((categoryId, index) => {
             const category = techCategories[categoryId];
             const title = category.title[language];
@@ -119,62 +136,63 @@ const TechStackSection = () => {
                 initial={{ opacity: 0, y: 24 }}
                 animate={isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.2 + index * 0.1 }}
-                className="glass-card p-6 flex flex-col gap-4"
+                className="glass-card p-4 flex flex-col gap-3 min-h-[280px]"
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-2xl font-semibold text-foreground">{title}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">{desc}</p>
                   </div>
-                  <span className="text-xs text-muted-foreground/70">{category.icons.length} tech</span>
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex-1">
                   {(() => {
-                    const functionalIcons = category.icons.filter((icon) => icon.functional);
-                    const mainIcons = category.icons.filter((icon) => !icon.functional);
-                    const renderIcon = (icon: TechIcon) => (
-                      <div
-                        key={`${categoryId}-${icon.name}`}
-                        className="relative w-16 h-16 rounded-2xl bg-secondary/40 border border-border/60 flex items-center justify-center hover:scale-110 hover:border-primary/60 transition-all duration-300"
-                        title={icon.name}
-                      >
-                        <img src={icon.url} alt={icon.name} className="w-9 h-9 object-contain" />
-                        {icon.functional ? (
-                          <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-[2px] rounded-full bg-primary text-primary-foreground text-[10px] font-semibold uppercase tracking-wide shadow-[0_4px_14px_hsl(var(--primary)/0.4)]">
-                            {functionalLabel}
-                          </span>
-                        ) : null}
+                    const renderTree = (icon: TechIcon, index: number, isLast: boolean) => (
+                      <div key={`${categoryId}-${icon.name}`} className="flex items-start">
+                        <div className="flex flex-col items-center">
+                          <div
+                            className="relative w-10 h-10 rounded-lg bg-secondary/40 border border-border/60 flex items-center justify-center hover:scale-110 hover:border-primary/60 transition-all duration-300"
+                            title={icon.name}
+                          >
+                            <img src={icon.url} alt={icon.name} className="w-6 h-6 object-contain" />
+                            {icon.functional && (
+                              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-1 py-0.5 rounded-full bg-primary text-primary-foreground text-[5px] font-semibold uppercase">
+                                {functionalLabel}
+                              </span>
+                            )}
+                          </div>
+                          {!isLast && <div className="w-px h-3 bg-border/50" />}
+                        </div>
+                        {icon.children && icon.children.length > 0 && (
+                          <div className="flex flex-col items-start ml-1">
+                            <div className="w-3 h-px bg-border/50 mt-4" />
+                            {icon.children.map((child, childIndex) => (
+                              <div key={`${categoryId}-${icon.name}-${child.name}`} className="flex items-center">
+                                <div className="w-px h-4 bg-border/50" />
+                                <div
+                                  className="relative w-8 h-8 rounded-lg bg-secondary/30 border border-border/40 flex items-center justify-center hover:scale-110 hover:border-primary/40 transition-all duration-300 ml-1"
+                                  title={child.name}
+                                >
+                                  <img src={child.url} alt={child.name} className="w-5 h-5 object-contain" />
+                                  {child.functional && (
+                                    <span className="absolute -bottom-1 -right-1 px-1 py-0.5 rounded-full bg-primary text-primary-foreground text-[4px] font-semibold uppercase">
+                                      {functionalLabel}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="w-px h-4 bg-border/50" />
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     );
 
                     return (
-                      <div className="flex w-full gap-3">
-                        <div className="flex flex-wrap gap-3 flex-1 justify-start">
-                          {mainIcons.map(renderIcon)}
-                        </div>
-                        <div className="flex flex-wrap gap-3 flex-1 justify-end">
-                          {functionalIcons.length ? functionalIcons.map(renderIcon) : null}
-                        </div>
+                      <div className="flex flex-wrap items-start gap-0">
+                        {category.icons.map((icon, index) => renderTree(icon, index, index === category.icons.length - 1))}
                       </div>
                     );
                   })()}
                 </div>
-                {(() => {
-                  const keywords = categorySkillFilters[categoryId];
-                  const badgeSkills = skills
-                    .filter((skill) => keywords.some((keyword) => skill.toLowerCase().includes(keyword)))
-                    .slice(0, 4);
-                  if (!badgeSkills.length) return null;
-                  return (
-                    <div className="flex flex-wrap gap-2 text-xs text-muted-foreground/80">
-                      {badgeSkills.map((skill) => (
-                        <span key={`${categoryId}-${skill}`} className="px-2 py-1 rounded-full bg-secondary/40 border border-border/50">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  );
-                })()}
               </motion.article>
             );
           })}

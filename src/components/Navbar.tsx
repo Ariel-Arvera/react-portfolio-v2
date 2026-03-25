@@ -15,7 +15,7 @@ const labels: Record<"es" | "en", { brand: string; nav: Item[] }> = {
     ],
   },
   en: {
-    brand: "DevPortfolio",
+    brand: "Ariel Vera",
     nav: [
       { id: "hero", label: "Home" },
       { id: "about", label: "About" },
