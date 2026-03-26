@@ -33,15 +33,35 @@ type EducationItem = {
   tags?: string[];
 };
 
+export type Project = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  demoUrl?: string;
+  repoUrl?: string;
+};
+
+export type TechCategory = {
+  id: string;
+  title: string;
+  icon: string;
+  items: { name: string; icon?: string }[];
+};
+
 export type CvData = {
   personalInfo: PersonalInfo;
   aboutText: string;
+  tagline: string;
   sections: { id: string; title: string; desc: string }[];
   navLinks: { id: string; label: string }[];
   experience: ExperienceItem[];
   extraCurricular: { title: string; period: string; points: string[] };
   education: EducationItem[];
   skills: string[];
+  techStack: TechCategory[];
+  projects: Project[];
   timelineUpdates: { title: string; date: string; description: string; tags: string[] }[];
   allTags: string[];
 };
@@ -96,15 +116,99 @@ const sharedSkills = [
   "English (B1)",
 ];
 
+const techStack = [
+  {
+    id: "frontend",
+    title: "Front-End",
+    icon: "code",
+    items: [
+      { name: "TypeScript", icon: "/icons/typescript.svg" },
+      { name: "JavaScript", icon: "/icons/javascript.svg" },
+      { name: "React", icon: "/icons/react.svg" },
+      { name: "Tailwind", icon: "/icons/tailwind.svg" },
+      { name: "HTML", icon: "/icons/html.svg" },
+      { name: "Bootstrap", icon: "/icons/bootstrap.svg" },
+      { name: "Angular", icon: "/icons/angular.svg" },
+      { name: "Next.js", icon: "/icons/nextjs.svg" },
+    ],
+  },
+  {
+    id: "backend",
+    title: "Backend",
+    icon: "server",
+    items: [
+      { name: "C#", icon: "/icons/csharp.svg" },
+      { name: ".NET 8", icon: "/icons/dotnet.svg" },
+      { name: "Laravel", icon: "/icons/laravel.svg" },
+      { name: "PHP", icon: "/icons/php.svg" },
+      { name: "Node.js", icon: "/icons/nodejs.svg" },
+      { name: "Java", icon: "/icons/java.svg" },
+      { name: "Spring Boot", icon: "/icons/spring.svg" },
+    ],
+  },
+  {
+    id: "database",
+    title: "Base de Datos",
+    icon: "database",
+    items: [
+      { name: "SQL Server", icon: "/icons/sqlserver.svg" },
+      { name: "SQLite", icon: "/icons/sqlite.svg" },
+      { name: "PostgreSQL", icon: "/icons/postgresql.svg" },
+      { name: "MongoDB", icon: "/icons/mongodb.svg" },
+      { name: "Oracle", icon: "/icons/oracle.svg" },
+    ],
+  },
+  {
+    id: "tools",
+    title: "Herramientas",
+    icon: "wrench",
+    items: [
+      { name: "Git", icon: "/icons/git.svg" },
+      { name: "GitHub", icon: "/icons/github.svg" },
+      { name: "GitLab", icon: "/icons/gitlab.svg" },
+      { name: "Azure DevOps", icon: "/icons/azure.svg" },
+      { name: "Docker", icon: "/icons/docker.svg" },
+      { name: "Figma", icon: "/icons/figma.svg" },
+      { name: "Jira", icon: "/icons/jira.svg" },
+      { name: "Postman", icon: "/icons/postman.svg" },
+    ],
+  },
+];
+
+const projects: Project[] = [
+  {
+    id: "1",
+    title: "Portfolio Web Personal",
+    description: "Sitio web personal desarrollado con React, TypeScript y animaciones modernas.",
+    image: "/images/portfolio-preview.jpg",
+    tags: ["React", "TypeScript", "Tailwind", "Framer Motion"],
+    demoUrl: "https://ariel-arvera.github.io/portfolio/",
+    repoUrl: "https://github.com/Ariel-Arvera/react-portfolio-v2",
+  },
+  {
+    id: "2",
+    title: "E-commerce Platform",
+    description: "Plataforma de comercio electrónico con gestión de productos, carrito y pagos.",
+    image: "/images/ecommerce-preview.jpg",
+    tags: ["React", "Node.js", "MongoDB", "Stripe"],
+  },
+  {
+    id: "3",
+    title: "Dashboard Admin",
+    description: "Panel de administración con gráficos, gestión de usuarios y métricas en tiempo real.",
+    image: "/images/dashboard-preview.jpg",
+    tags: ["React", "TypeScript", "Recharts", "REST API"],
+  },
+];
+
 const esData: CvData = {
   personalInfo: {
     name: "Ariel Vera",
     title: "Desarrollador Web / Full Stack",
     location: "Madrid, España",
-    tagline:
-      "",
+    tagline: "",
     email: "ariel.arvera@gmail.com",
-    phone: "695 298 272",
+    phone: "+34 695 29 82 72",
     linkedin: "https://linkedin.com/in/ariel-vera-94ab26137",
     linkedinDisplay: "linkedin.com/in/ariel-vera-94ab26137",
     portfolioUrl: "https://ariel-arvera.github.io/curriculum-vitae/",
@@ -115,7 +219,8 @@ const esData: CvData = {
     workPermit: "Con permiso de trabajo en la Unión Europea",
   },
   aboutText:
-    "Desarrollador Full Stack con 2 años de experiencia en el desarrollo de aplicaciones web, especializado en TypeScript, React y Angular en el Frontend, y C#/.NET y Java en el Backend. Experiencia en el diseño, desarrollo e integración de APIs REST, gestión de bases de datos SQL y trabajo colaborativo mediante Git. Enfoque en buenas prácticas, calidad de código y aprendizaje continuo..",
+    "Desarrollador Full Stack con 2 años de experiencia en el desarrollo de aplicaciones web, especializado en TypeScript, React y Angular en el Frontend, y C#/.NET y Java en el Backend. Experiencia en el diseño, desarrollo e integración de APIs REST, gestión de bases de datos SQL y trabajo colaborativo mediante Git. Enfoque en buenas prácticas, calidad de código y aprendizaje continuo.",
+  tagline: "Diseño experiencias UI/UX",
   sections: [
     { id: "about", title: "Sobre Mí", desc: "Perfil profesional y enfoque técnico" },
     { id: "education", title: "Formación", desc: "Formación académica y certificaciones" },
@@ -261,6 +366,8 @@ const esData: CvData = {
     },
   ],
   skills: sharedSkills,
+  techStack: techStack,
+  projects: projects,
   timelineUpdates: [
     {
       title: "Programacion con C#",
@@ -312,7 +419,7 @@ const enData: CvData = {
     location: "Madrid, Spain",
     tagline: "Full Stack Developer with 10 years of IT infrastructure experience and 3 years as a Full Stack Web Developer using TypeScript, React, and Angular.",
     email: "ariel.arvera@gmail.com",
-    phone: "695 298 272",
+    phone: "+34 695 29 82 72",
     linkedin: "https://linkedin.com/in/ariel-vera-94ab26137",
     linkedinDisplay: "linkedin.com/in/ariel-vera-94ab26137",
     portfolioUrl: "https://ariel-arvera.github.io/curriculum-vitae/",
@@ -324,6 +431,7 @@ const enData: CvData = {
   },
   aboutText:
     "Full Stack Developer with 10 years of IT infrastructure experience and 3 years of professional Full Stack web development using TypeScript, React, and Angular on the frontend, and C#/.NET or Java on the backend. Experienced in REST API design/integration, SQL database management, and collaborative workflows with Git. Strong focus on code quality, best practices, and continuous learning.",
+  tagline: "Design UI/UX experiences",
   sections: [
     { id: "about", title: "About", desc: "Professional profile and technical focus" },
     { id: "education", title: "Education", desc: "Academic background and certifications" },
@@ -469,6 +577,8 @@ const enData: CvData = {
     },
   ],
   skills: sharedSkills,
+  techStack: techStack,
+  projects: projects,
   timelineUpdates: [
     {
       title: "C# Programming",

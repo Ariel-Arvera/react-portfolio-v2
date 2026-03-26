@@ -1,124 +1,68 @@
 import { motion } from "framer-motion";
-import { useState, type CSSProperties } from "react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Code, Brain, Smartphone, Database, Plug, FolderKanban, Users, Rocket } from "lucide-react";
 import { getCvData } from "@/data/cv-2";
 import { useLanguage } from "@/context/language";
-
-const highlightsByLanguage = {
-  es: [
-    { icon: Code, label: "Desarrollo Full Stack" },
-    { icon: Brain, label: "Aprendizaje continuo" },
-    { icon: Smartphone, label: "Diseño responsive" },
-    { icon: Database, label: "Gestión de bases de datos" },
-    { icon: Plug, label: "Integración de APIs" },
-    { icon: FolderKanban, label: "Arquitectura de proyectos" },
-    { icon: Users, label: "Trabajo en equipo" },
-    { icon: Rocket, label: "Soluciones escalables" },
-  ],
-  en: [
-    { icon: Code, label: "Full Stack Development" },
-    { icon: Brain, label: "Continuous learning" },
-    { icon: Smartphone, label: "Responsive design" },
-    { icon: Database, label: "Database management" },
-    { icon: Plug, label: "API integration" },
-    { icon: FolderKanban, label: "Project architecture" },
-    { icon: Users, label: "Team collaboration" },
-    { icon: Rocket, label: "Scalable solutions" },
-  ],
-} as const;
-
-const floatingTechIcons = [
-  { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg", top: -12, left: 16, dx: 18, dy: -16, delay: 0 },
-  { name: "TypeScript", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg", top: 6, left: -4, dx: -14, dy: -10, delay: 0.2 },
-  { name: "Angular", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg", top: 32, left: -10, dx: -12, dy: 8, delay: 0.4 },
-  { name: "Docker", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg", top: 72, left: -2, dx: -8, dy: 14, delay: 0.6 },
-  { name: "Tailwind CSS", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg", top: 102, left: 22, dx: 12, dy: 12, delay: 0.8 },
-  { name: "Node.js", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg", top: 110, left: 54, dx: 16, dy: -10, delay: 1 },
-  { name: "Git", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg", top: 84, left: 86, dx: -10, dy: -16, delay: 1.2 },
-  { name: "C#", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", top: 40, left: 96, dx: -18, dy: -6, delay: 1.4 },
-  { name: "Java", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg", top: 4, left: 78, dx: 10, dy: 12, delay: 1.6 },
-];
 
 const AboutSection = () => {
   const { language } = useLanguage();
   const { aboutText, personalInfo } = getCvData(language);
-  const highlights = highlightsByLanguage[language];
-  const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="about" className="section-padding">
-      <div className="container mx-auto px-6" ref={ref}>
+    <section 
+      id="about" 
+      className="py-12"
+      style={{ backgroundColor: "#1e1930" }}
+    >
+      <div className="max-w-[844px] mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="flex flex-col md:flex-row gap-12 items-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col md:flex-row gap-8"
         >
-          <div className="md:w-1/3 flex justify-center">
-            <motion.div
-              className="relative w-64 h-64 max-w-full flex items-center justify-center tech-float-stage"
-              whileHover={{ scale: 1.04, rotate: -1.5 }}
-              transition={{ type: "spring", stiffness: 220, damping: 16 }}
-              style={{ perspective: "1400px" }}
+          <div className="md:w-1/2">
+            <motion.h2
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-base text-white text-right mb-4"
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
-              <div className="absolute inset-0 tech-float-layer" aria-hidden>
-                {floatingTechIcons.map((icon) => (
-                  <span
-                    key={`${icon.name}-${icon.left}-${icon.top}`}
-                    className="tech-float-chip"
-                    style={{
-                      top: `${icon.top}%`,
-                      left: `${icon.left}%`,
-                      animationDelay: `${icon.delay}s`,
-                      animationDuration: `${6 + icon.delay * 0.8}s`,
-                      ["--dx" as string]: `${icon.dx}px`,
-                      ["--dy" as string]: `${icon.dy}px`,
-                    } as CSSProperties}
-                    title={icon.name}
-                  >
-                    <img src={icon.url} alt={icon.name} />
-                  </span>
-                ))}
-              </div>
-              <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden border-2 border-primary/30 box-glow relative z-10 bg-card/80">
-                <img
-                  src={personalInfo.profileImage}
-                  alt={personalInfo.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              {language === "es" ? "Sobre Mi" : "About Me"}
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="text-[10px] text-white text-right leading-[2] tracking-[2px]"
+              style={{ fontFamily: "Inter, sans-serif", fontWeight: 300 }}
+            >
+              {aboutText}
+            </motion.p>
+          </div>
+
+          <div className="md:w-1/2 flex justify-center md:justify-end">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="w-[191px] h-[155px]"
+            >
+              <div 
+                className="w-full h-full rounded-[19px] overflow-hidden"
+                style={{
+                  backgroundImage: `url(${personalInfo.profileImage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  opacity: 0.97
+                }}
+              />
             </motion.div>
           </div>
-          <div className="md:w-2/3">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-text">{language === "es" ? "Sobre Mí" : "About Me"}</h2>
-            <p className="text-muted-foreground leading-relaxed text-justify" style={{ fontFamily: "Arial, sans-serif", fontSize: "19px", lineHeight: "2" }}>
-              {aboutText}
-            </p>
-          </div>
         </motion.div>
-
-        <br />
-        <br />
-        <br />
-
-        <div className="mt-8 -mx-6 overflow-hidden">
-          <div className="flex animate-marquee gap-4 py-2">
-            {[...highlights, ...highlights, ...highlights].map(({ icon: Icon, label }, i) => (
-              <motion.div
-                key={`${label}-${i}`}
-                initial={{ opacity: 0, y: 15 }}
-                animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.3 + i * 0.06 }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="flex items-center gap-2 glass-card px-4 py-2.5 text-sm whitespace-nowrap hover:border-primary/40 transition-all"
-              >
-                <Icon className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-foreground/80">{label}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
